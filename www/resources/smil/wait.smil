@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<smil>
+    <head>
+        <meta name="title" content="Standard Playliste für frisch registrierte Player" />
+        <meta http-equiv="Refresh" content="120" />
+        <layout>
+            <root-layout backgroundColor="#000000" width="1280" height="720" />
+        </layout>
+    </head>
+    <body>
+        <seq repeatCount="indefinite">
+            <img src="resources/connected.jpg" dur="120" fit="fill"/>
+            <img src="resources/connected.jpg" dur="120" fit="fill"/>
+            <img src="resources/connected.jpg" dur="120" fit="fill"/>
+        </seq>
+    </body>
+</smil>

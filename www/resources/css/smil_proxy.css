@@ -1,0 +1,28 @@
+*
+{
+	font: 2vw sans-serif;
+}
+
+table
+{
+	width:100%;
+
+}
+
+th
+{
+	font-weight:bold;
+	color:#fff;
+	background:#000;
+}
+td
+{
+	padding:0.2vw 1vw;
+}
+
+tbody tr:nth-child(odd)
+{
+	background-color:#eee;
+}
+tbody tr:hover td, tbody tr.odd:hover td
+{background-color: rgba(200, 214, 221, 0.41) }
