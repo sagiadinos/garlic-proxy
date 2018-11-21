@@ -1,6 +1,6 @@
 *
 {
-	font: 2vw sans-serif;
+	font: 1.7vw sans-serif;
 }
 
 table
@@ -17,7 +17,7 @@ th
 }
 td
 {
-	padding:0.2vw 1vw;
+	padding:0.4vw 1vw;
 }
 
 tbody tr:nth-child(odd)

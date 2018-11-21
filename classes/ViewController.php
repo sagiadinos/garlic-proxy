@@ -16,16 +16,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Basil;
 
-
 class ViewController extends BaseController
 {
 	public function view()
 	{
-
-		$list = $this->getModel()->scanRegisteredPlayer();
-
-		require_once ($this->getConfiguration()->getSystemPath().'/templates/header.php');
-		require_once ($this->getConfiguration()->getSystemPath().'/view/list.php');
-		require_once ($this->getConfiguration()->getSystemPath().'/templates/footer.php');
+		$list        = $this->getModel()->scanRegisteredPlayer();
+		$system_path = $this->getConfiguration()->getSystemPath();
+		require_once ($system_path.'/templates/header.php');
+		require_once ($system_path.'/view/list.php');
+		require_once ($system_path.'/templates/footer.php');
 	}
 }

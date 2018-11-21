@@ -1,0 +1,25 @@
+<phpunit bootstrap="bootstrap.php" stderr="true" stopOnRisky="true">
+    <testsuites>
+        <testsuite name="unit_tests">
+            <directory>./tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <groups>
+        <include>
+            <group>units</group>
+        </include>
+    </groups>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../classes</directory>
+
+            <exclude>
+                <directory suffix=".php">../classes/framework</directory>
+                <directory suffix=".php">../classes/framework/external</directory>
+            </exclude>
+
+        </whitelist>
+    </filter>
+</phpunit>

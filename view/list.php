@@ -19,12 +19,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 $table  = '';
+$UserAgent   = new \Basil\helper\UserAgent();
+$PlayerModel = $this->getModel(); // Do not forget, that we are insite of the ViewController!
 foreach ($list as $file_info)
 {
 	if (!$file_info->isDot())
 	{
+		$UserAgent->setInfoFromAgentString($PlayerModel->getContentOfFile($file_info));
+		$player_name = $UserAgent->getName();
+
 		$table .= '
 		<tr>
+			<td>'.$player_name.'</td>
 			<td>'.$file_info->getFilename().'</td>
 			<td>'.date('Y-m-d H:i:s', $file_info->getCTime()).'</td>
 			<td>'.date('Y-m-d H:i:s', $file_info->getATime()).'</td>
@@ -36,6 +42,9 @@ if ($table != '')
 <table>
 	<thead>
 		<tr>
+			<th>
+				Player name
+			</th>
 			<th>
 				Filename
 			</th>

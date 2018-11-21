@@ -16,6 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Basil;
 
+use Basil\helper\Configuration;
+use Basil\helper\UserAgent;
+use Basil\model\PlayerModel;
 
 class PlayerController extends BaseController
 {
@@ -37,11 +40,11 @@ class PlayerController extends BaseController
 	}
 
 	/**
-	 * @param mixed $UserAgent
+	 * @param UserAgent $UserAgent
 	 *
 	 * @return PlayerController
 	 */
-	public function setUserAgent($UserAgent)
+	public function setUserAgent(UserAgent $UserAgent)
 	{
 		$this->UserAgent = $UserAgent;
 		return $this;
@@ -60,6 +63,9 @@ class PlayerController extends BaseController
 		return $this;
 	}
 
+	/**
+	 * @return $this
+	 */
 	protected function registerPlayer()
 	{
 		$this->getModel()->register($this->getUserAgent()->getUuid(), $this->getUserAgent()->getAgentString());

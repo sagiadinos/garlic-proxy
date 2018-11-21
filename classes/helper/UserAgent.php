@@ -14,7 +14,7 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-namespace Basil;
+namespace Basil\helper;
 
 
 class UserAgent
@@ -58,7 +58,7 @@ class UserAgent
 
 
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function getUuid()
 	{
@@ -66,7 +66,7 @@ class UserAgent
 	}
 
 	/**
-	 * @return array
+	 * @return string
 	 */
 	public function getName()
 	{
@@ -76,9 +76,9 @@ class UserAgent
 	/**
 	 * @return array
 	 */
-	public function getFirmware()
+	public function getInfo()
 	{
-		return $this->info['firmware'];
+		return $this->info;
 	}
 
 	/**
@@ -87,74 +87,6 @@ class UserAgent
 	public function isDsPlayer()
 	{
 		return $this->is_ds_player;
-	}
-
-	/**
-	 * @param $model_name
-	 * @return $this
-	 */
-	public function detectModelId($model_name)
-	{
-		switch ($model_name)
-		{
-			case 'XMP-120':
-			case 'XMP-130':
-			case 'XDS-101':
-			case 'XDS-104':
-			case 'XDS-151':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_IADEA_XMP1X0);
-				break;
-			case 'XMP-320':
-			case 'XMP-330':
-			case 'XMP-340':
-			case 'XDS-195':
-			case 'XDS-245':
-			case 'GDATA-1100':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_IADEA_XMP3X0);
-				break;
-			case 'XMP-3250':
-			case 'XMP-3350':
-			case 'XMP-3450':
-			case 'XDS-1950':
-			case 'XDS-2450':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_IADEA_XMP3X50);
-				break;
-			case 'fs5-player':
-			case 'fs5-playerSTLinux':
-			case 'NTnextPlayer':
-			case 'Kathrein':
-			case 'NT111':
-			case 'NTwin':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_KATHREIN);
-				break;
-			case 'XMP-2200':
-			case 'MBR-1100':
-			case 'XMP-6200':
-			case 'XMP-6250':
-			case 'XMP-6400':
-			case 'XMP-7300':
-			case 'XDS-1060':
-			case 'XDS-1062':
-			case 'XDS-1068':
-			case 'XDS-1078':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_IADEA_XMP2X00);
-				break;
-			case 'Garlic':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_GARLIC);
-				break;
-			case 'IDS-App':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_IDS);
-				break;
-			case 'BXP-202':
-			case 'BXP-301':
-			case 'TD-1050':
-				$this->setModelId(PlayerModel::PLAYER_MODEL_QBIC);
-				break;
-			default:
-				$this->setModelId(PlayerModel::PLAYER_MODEL_UNKNOWN);
-				break;
-		}
-		return $this;
 	}
 
 	public function setInfoFromAgentString($agent_string)
@@ -167,7 +99,7 @@ class UserAgent
 							   'uuid' => $matches[2],
 							   'firmware_version' => $matches[4],
 							   'name' => urldecode($matches[3]),
-							   'model' => $this->detectModelId($matches[5])->getModelId()
+							   'model' => $matches[5]
 						   ));
 			$this->is_ds_player = true;
 		}
@@ -178,7 +110,7 @@ class UserAgent
 							   'uuid' => $matches[2],
 							   'firmware_version' => $matches[4],
 							   'name' => urldecode($matches[3]),
-							   'model' => $this->detectModelId($matches[5])->getModelId()
+							   'model' => $matches[5]
 						   ));
 			$this->is_ds_player = true;
 		}
@@ -188,33 +120,21 @@ class UserAgent
 							   'uuid' => $matches[2],
 							   'firmware_version' => $matches[4],
 							   'name' => urldecode($matches[3]),
-							   'model' => $this->detectModelId($matches[5])->getModelId()
+							   'model' => $matches[5]
 						   ));
 			$this->is_ds_player = true;
 		}
 		else
 		{
+			$this->setInfo(array(
+							   'uuid' => '',
+							   'firmware_version' => '',
+							   'name' => '',
+							   'model' => ''
+						   ));
 			$this->is_ds_player = false;
 		}
 		return $this;
-	}
-
-	/**
-	 * @param int $model_id
-	 *
-	 * @return UserAgent
-	 */
-	protected function setModelId($model_id)
-	{
-		$this->model_id = $model_id;
-		return $this;
-	}
-	/**
-	 * @return int
-	 */
-	protected function getModelId()
-	{
-		return $this->model_id;
 	}
 
 	/**

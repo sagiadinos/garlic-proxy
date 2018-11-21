@@ -16,6 +16,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace Basil;
 
+use Basil\helper\Configuration;
+use Basil\model\PlayerModel;
+
 class BaseController
 {
 	/**
