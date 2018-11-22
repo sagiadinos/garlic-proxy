@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************
 basil-proxy: A proxy solution for Digital Signage SMIL Player
-Copyright (C) 2018 Nikolaos Saghiadinos <ns@smil-control.com>
+Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
 This file is part of the basil-proxy source code
 This program is free software: you can redistribute it and/or  modify
 it under the terms of the GNU Affero General Public License, version 3,
@@ -66,18 +66,15 @@ class PlayerModel extends BaseFileModel
 	}
 
 	/**
-	 * @param string $filename
+	 * @param string $uuid
 	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	public function getContentOfFile($filename)
+	public function load($uuid)
 	{
-		$filepath = $this->player_register_path.'/'.$filename;
-		if (!file_exists($filepath))
-			throw new \Exception($filepath.' not exists');
-
-		return file_get_contents($filepath);
+		$filepath = $this->player_register_path.'/'.$uuid.'.reg';
+		return $this->readContentofFile($filepath);
 	}
 
 	/**

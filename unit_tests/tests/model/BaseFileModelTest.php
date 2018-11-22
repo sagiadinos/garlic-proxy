@@ -15,15 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-try
-{
-	require_once ('./bootstrap.php');
 
-	require_once ('cli/get_indexes.php');
+use Basil\model\BaseFileModel;
+use PHPUnit\Framework\TestCase;
 
-}
-catch(\Exception $e)
+class BaseFileModelTest extends TestCase
 {
-	print PHP_EOL . $e->getMessage() . PHP_EOL;
-	exit(255);
+
 }

@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************
 basil-proxy: A proxy solution for Digital Signage SMIL Player
-Copyright (C) 2018 Nikolaos Saghiadinos <ns@smil-control.com>
+Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
 This file is part of the basil-proxy source code
 This program is free software: you can redistribute it and/or  modify
 it under the terms of the GNU Affero General Public License, version 3,
@@ -74,7 +74,7 @@ class PlayerController extends BaseController
 
 	protected function sendSmilIndex()
 	{
-		$file_path = $this->getConfiguration()->getFullPathValuesByKey('index_path').'/uuid.smil';
+		$file_path = $this->getConfiguration()->getFullPathValuesByKey('index_path').'/'.$this->getUserAgent()->getUuid().'.smil';
 		if (!file_exists($file_path))
 			$file_path = $this->getConfiguration()->getSystemPath().'/www/resources/smil/wait.smil';
 

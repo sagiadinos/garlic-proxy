@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************
 basil-proxy: A proxy solution for Digital Signage SMIL Player
-Copyright (C) 2018 Nikolaos Saghiadinos <ns@smil-control.com>
+Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
 This file is part of the basil-proxy source code
 This program is free software: you can redistribute it and/or  modify
 it under the terms of the GNU Affero General Public License, version 3,
@@ -25,12 +25,12 @@ foreach ($list as $file_info)
 {
 	if (!$file_info->isDot())
 	{
-		$UserAgent->setInfoFromAgentString($PlayerModel->getContentOfFile($file_info));
+		$UserAgent->setInfoFromAgentString($PlayerModel->load($file_info->getBasename('.reg')));
 		$player_name = $UserAgent->getName();
 
 		$table .= '
 		<tr>
-			<td>'.$player_name.'</td>
+			<td><button>&#128472;</button> '.$player_name.'</td>
 			<td>'.$file_info->getFilename().'</td>
 			<td>'.date('Y-m-d H:i:s', $file_info->getCTime()).'</td>
 			<td>'.date('Y-m-d H:i:s', $file_info->getATime()).'</td>
@@ -39,6 +39,7 @@ foreach ($list as $file_info)
 }
 if ($table != '')
 	$table =  '
+<button>refresh all</button>
 <table>
 	<thead>
 		<tr>
