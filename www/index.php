@@ -39,7 +39,7 @@ try
 	{
 		$Controller = new \Basil\ViewController($PlayerModel, $Configuration);
 		// validation ToDo: write a small lib
-		if ($_GET['site'] == 'list' || $_GET['site'] == 'get_index')
+		if (isset($_GET['site']) && ($_GET['site'] == 'list' || $_GET['site'] == 'get_index'))
 			$site = $_GET['site'];
 		else
 			$site = 'list';
