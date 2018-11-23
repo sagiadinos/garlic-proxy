@@ -76,7 +76,7 @@ class PlayerController extends BaseController
 	{
 		$file_path = $this->getConfiguration()->getFullPathValuesByKey('index_path').'/'.$this->getUserAgent()->getUuid().'.smil';
 		if (!file_exists($file_path))
-			$file_path = $this->getConfiguration()->getSystemPath().'/www/resources/smil/wait.smil';
+			$file_path = $this->getConfiguration()->getSystemDir().'/www/resources/smil/wait.smil';
 
 		// not cached or cache outdated, 200 OK send index.smil
 		header('Last-Modified: ' . gmdate('D, d M Y H:i:s', filemtime($file_path)) . ' GMT', true, 200);

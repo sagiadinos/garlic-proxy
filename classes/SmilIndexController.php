@@ -47,10 +47,10 @@ class SmilIndexController extends BaseController
 	function __construct(PlayerModel $playerModel, IndexModel $indexModel, Configuration $config, \Thymian\framework\Curl $Curl)
 	{
 		$this->setCurl($Curl)
-			 ->setIndexModel($indexModel);
+			 ->setIndexModel($indexModel)
+			 ->setConfiguration($config);
 
 		$Curl->setUrl($this->getConfiguration()->getIndexServer());
-
 		parent::__construct($playerModel, $config);
 	}
 
@@ -68,9 +68,10 @@ class SmilIndexController extends BaseController
 	public function requestIndexForRegisteredPlayer($uuid)
 	{
 		$this->new_index = false;
-		$this->getCurl()->clearHeaders();
-		$this->getCurl()->setSplitHeaders(false);
-		$this->determineUserAgent($uuid);
+		$this->getCurl()
+			 ->clearHeaders()
+			 ->setSplitHeaders(false)
+			 ->setUserAgent($this->determineUserAgent($uuid));
 
 		$this->requestHead();
 		if ($this->getCurl()->getHttpCode() == 200)
@@ -92,7 +93,6 @@ class SmilIndexController extends BaseController
 	protected function determineUserAgent($uuid)
 	{
 		$user_agent = $this->getModel()->load($uuid);
-		$this->getCurl()->addHeader($user_agent);
 		return $user_agent;
 	}
 
@@ -111,8 +111,9 @@ class SmilIndexController extends BaseController
 	 */
 	protected function requestGet()
 	{
-		$this->getCurl()->setRequestMethodGet();
-		$this->getCurl()->curlExec();
+		$this->getCurl()
+			 ->setRequestMethodGet()
+		     ->curlExec(false);
 		return $this;
 	}
 

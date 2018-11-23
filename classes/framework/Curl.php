@@ -168,6 +168,19 @@ class Curl
 	protected $split_headers = true;
 
 	/**
+	 * @var bool
+	 */
+	protected $file_download = false;
+	/**
+	 * @var string
+	 */
+	protected $local_filepath = '';
+	/**
+	 * @var
+	 */
+	protected $file_handle;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   string	 $url
@@ -325,6 +338,44 @@ class Curl
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isFileDownload()
+	{
+		return $this->file_download;
+	}
+
+	/**
+	 * @param bool $file_download
+	 *
+	 * @return Curl
+	 */
+	public function setFileDownload($file_download)
+	{
+		$this->file_download = $file_download;
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLocalFilepath()
+	{
+		return $this->local_filepath;
+	}
+
+	/**
+	 * @param string $local_filepath
+	 *
+	 * @return Curl
+	 */
+	public function setLocalFilepath($local_filepath)
+	{
+		$this->local_filepath = $local_filepath;
+		return $this;
+	}
+
+	/**
 	 * let curl do his work
 	 *
 	 * @param   bool    $split_headers    determine if we return the split the response to headers and body (true/default) or combine the result (false). Needed for feeds
@@ -352,6 +403,12 @@ class Curl
 		$this->setSplitHeaders($split_headers);
 		$this->parseResponse($response);
 
+		if ($this->isFileDownload())
+		{
+			fclose($this->file_handle);
+			$this->setFileDownload(false);
+
+		}
 		return $this;
 	}
 
@@ -491,6 +548,12 @@ class Curl
 
 		curl_setopt($this->curl_handle, CURLOPT_SSL_VERIFYPEER, ($this->verifySSL == false) ? 0 : 1);
 		curl_setopt($this->curl_handle, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($this->curl_handle, CURLOPT_TIMEOUT, 300); //set timeout to 5 mins for larger downloads
+		if ($this->isFileDownload())
+		{
+			$this->file_handle = fopen($this->getLocalFilepath(), 'w+');
+			curl_setopt($this->curl_handle, CURLOPT_FILE, $this->file_handle);
+		}
 
 		switch($this->request_method)
 		{

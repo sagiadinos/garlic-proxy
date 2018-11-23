@@ -17,13 +17,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 /**
  * @var $Configuration 				\Basil\helper\Configuration
  */
+$system_dir = realpath("../");
 
 try
 {
 	require_once('../bootstrap.php');
 
 	$PlayerModel = new \Basil\model\PlayerModel($Configuration->getFullPathValuesByKey('player_path'));
-	$UserAgent = new \Basil\helper\UserAgent();
+	$UserAgent   = new \Basil\helper\UserAgent();
 
 	// $agent =  'ADAPI/1.0 (UUID:a8294bat-c28f-50af-f94o-800869af5854; NAME:Player with spaces in name) SK8855-ADAPI/2.0.5 (MODEL:XMP-330)';
 	$UserAgent->setInfoFromAgentString($_SERVER['HTTP_USER_AGENT']);
@@ -37,7 +38,12 @@ try
 	else // user Browser
 	{
 		$Controller = new \Basil\ViewController($PlayerModel, $Configuration);
-		$Controller->view();
+		// validation ToDo: write a small lib
+		if ($_GET['site'] == 'list' || $_GET['site'] == 'get_index')
+			$site = $_GET['site'];
+		else
+			$site = 'list';
+		$Controller->view($site);
 	}
 }
 catch(\Exception $e)

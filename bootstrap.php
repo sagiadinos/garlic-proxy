@@ -29,7 +29,7 @@ else
 require_once('classes/framework/Autoloader.php');
 $loader = new \Thymian\framework\Autoloader();
 $loader->register()
-	   ->addNamespace('\Thymian','../classes/')
-	   ->addNamespace('\Basil','../classes/');
+	   ->addNamespace('\Thymian',$system_dir.'/classes/')
+	   ->addNamespace('\Basil',$system_dir.'/classes/');
 
-$Configuration  = new \Basil\helper\Configuration();
+$Configuration  = new \Basil\helper\Configuration($system_dir.'/configuration/main.ini', $system_dir);

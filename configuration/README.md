@@ -1,1 +1,1 @@
-Here you must copy and edit installl/main.ini
+Here you must copy and edit install/main.ini

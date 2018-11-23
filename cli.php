@@ -17,8 +17,12 @@
 
 try
 {
+	$system_dir = realpath("./") . DIRECTORY_SEPARATOR;
+
 	require_once ('./bootstrap.php');
 
+	// we can put here a cli parameter lib if necessary
+	// currently we will get all the indexes from cmd
 	require_once ('cli/get_indexes.php');
 
 }

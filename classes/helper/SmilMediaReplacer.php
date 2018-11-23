@@ -15,11 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-
 namespace Basil\helper;
-
-
-
 
 use Thymian\framework\Curl;
 
@@ -35,14 +31,27 @@ class SmilMediaReplacer
 	 */
 	protected $Curl;
 	/**
+	 * @var Configuration
+	 */
+	protected $Configuration;
+	/**
 	 * @var array
 	 */
 	protected $matches = array();
+	/**
+	 * @var string
+	 */
+	protected $relative_local_filepath = '';
+	/**
+	 * @var string
+	 */
+	protected $absolute_local_filepath = '';
 
-	public function __construct($smil_index, Curl $curl)
+	public function __construct($smil_index, Curl $curl, Configuration $config)
 	{
 		$this->setSmil($smil_index)
-			 ->setCurl($curl);
+			 ->setCurl($curl)
+			 ->setConfiguration($config);
 	}
 
 	/**
@@ -51,22 +60,6 @@ class SmilMediaReplacer
 	public function getSmil()
 	{
 		return $this->smil;
-	}
-
-	public function replace()
-	{
-		foreach ($this->getMatches() as $uri)
-		{
-			if ($this->isUriRelative())
-			{
-				// add get contenturl
-			}
-		//	else if (strpos($uri, $home_domain))
-
-			// if uri points to registered domain
-
-			// if uri
-		}
 	}
 
 	/**
@@ -83,6 +76,104 @@ class SmilMediaReplacer
 		return $this->getMatches();
 	}
 
+	public function replace($user_agent)
+	{
+		foreach ($this->getMatches() as $uri)
+		{
+			if (strpos($uri, $this->getConfiguration()->getHomeDomain()) === false)
+				continue;
+
+			$this->getCurl()->setUserAgent($user_agent);
+
+			$this->determineLocalFilePaths($uri);
+
+			// replace the smil
+			if ($this->downloadFile($uri, $this->absolute_local_filepath))
+			{
+				$this->setSmil(str_replace($uri, $this->relative_local_filepath, $this->getSmil()));
+			}
+		}
+		return $this;
+	}
+
+	/**
+	 * @param $uri
+	 *
+	 * @return $this
+	 */
+	protected function determineLocalFilePaths($uri)
+	{
+		$md5_uri = $this->buildMd5Uri($uri);
+
+		// check if a md5 file exists on server
+		$this->getCurl()
+			 ->setUrl($md5_uri)
+			 ->curlExec(false)
+		;
+
+		$url_path = parse_url($uri, PHP_URL_PATH);
+
+		// if yes, then read the md5 value and build a local path
+		if ($this->getCurl()->getHttpCode() == 200)
+		{
+			$md5             = trim($this->getCurl()->getResponseBody());
+			$extension       = pathinfo($url_path, PATHINFO_EXTENSION);
+			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$md5.'.'.$extension;
+			$this->relative_local_filepath = $this->getConfiguration()->getValuesByKey('media_path').'/'.$md5.'.'.$extension;
+		}
+		else // if not, then build a local path with filename
+		{
+			$filename        = pathinfo($url_path, PATHINFO_BASENAME);
+			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$filename;
+			$this->relative_local_filepath = $this->getConfiguration()->getValuesByKey('media_path').'/'.$filename;
+		}
+		return $this;
+	}
+
+	/**
+	 * @param $uri
+	 * @param $local_file_path
+	 *
+	 * @return bool
+	 */
+	protected function downloadFile($uri, $local_file_path)
+	{
+		if (file_exists($local_file_path))
+		{
+			return true;
+		}
+		$this->getCurl()->setUrl($uri)
+			 ->setFileDownload(true)
+			 ->setLocalFilepath($local_file_path)
+			 ->curlExec(false)
+		;
+
+		if (!file_exists($local_file_path))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @param $uri
+	 *
+	 * @return string
+	 */
+	protected function buildMd5Uri($uri)
+	{
+		$md5_uri = $uri.'.md5';
+		if ($this->isUriRelative($uri))
+			$md5_uri = $this->getConfiguration()->getIndexServer().'/'.$md5_uri;
+		return $md5_uri;
+	}
+
+	/**
+	 * @param $uri
+	 *
+	 * @return bool
+	 */
 	protected function isUriRelative($uri)
 	{
 		return ($uri != '/' && strpos($uri,'http') === false);
@@ -119,6 +210,25 @@ class SmilMediaReplacer
 	}
 
 	/**
+	 * @return Configuration
+	 */
+	public function getConfiguration()
+	{
+		return $this->Configuration;
+	}
+
+	/**
+	 * @param Configuration $Configuration
+	 *
+	 * @return SmilMediaReplacer
+	 */
+	public function setConfiguration($Configuration)
+	{
+		$this->Configuration = $Configuration;
+		return $this;
+	}
+
+	/**
 	 * @return array
 	 */
 	protected function getMatches()
@@ -136,6 +246,5 @@ class SmilMediaReplacer
 		$this->matches = $matches;
 		return $this;
 	}
-
 
 }

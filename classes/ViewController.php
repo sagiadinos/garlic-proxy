@@ -18,12 +18,12 @@ namespace Basil;
 
 class ViewController extends BaseController
 {
-	public function view()
+	public function view($view = 'list')
 	{
 		$list        = $this->getModel()->scanRegisteredPlayer();
-		$system_path = $this->getConfiguration()->getSystemPath();
-		require_once ($system_path.'/templates/header.php');
-		require_once ($system_path.'/view/list.php');
-		require_once ($system_path.'/templates/footer.php');
+		$system_dir = $this->getConfiguration()->getSystemDir();
+		require_once ($system_dir.'/templates/header.php');
+		require_once ($system_dir.'/view/'.$view.'.php');
+		require_once ($system_dir.'/templates/footer.php');
 	}
 }

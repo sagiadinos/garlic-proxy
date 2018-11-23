@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************
  * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Saiadinos <ns@smil-control.com>
+ * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
  * This file is part of the basil-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
@@ -15,7 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-$PlayerModel      = new \Basil\model\PlayerModel($Configuration->getFullPathValuesByKey('player_path'));
+$PlayerModel   = $this->getModel(); // Do not forget, that we are insite of the ViewController!
+$Configuration = $this->getConfiguration();
+
 $player_list     = $PlayerModel->scanRegisteredPlayer();
 
 $IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
@@ -23,21 +25,14 @@ $IndexController = new \Basil\SmilIndexController($PlayerModel, $IndexModel, $Co
 
 $MediaModel      = new \Basil\model\MediaModel($Configuration->getFullPathValuesByKey('index_path'));
 
-echo $Configuration->getFullPathValuesByKey('player_path');
-foreach ($player_list as $file_info)
-{
-	if (!$file_info->isDot())
-	{
-		$uuid = $file_info->getBasename('.reg');
-		$IndexController->requestIndexForRegisteredPlayer($uuid);
-		if (!$IndexController->isNewIndex())
-			continue;
 
-		$smil_index        = $IndexController->readDownloadedIndex();
-		$Curl              = new \Thymian\framework\Curl();
-		$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($smil_index, $Curl, $Configuration);
-		$SmilMediaReplacer->findMatches();
-		$SmilMediaReplacer->replace($PlayerModel->load($uuid));
-		$IndexModel->saveIndex($uuid, $smil_index);
-	}
-}
+$uuid = 'f9d65c88-e4cd-43b4-89eb-5c338e68c2bd';
+$IndexController->requestIndexForRegisteredPlayer($uuid);
+if (!$IndexController->isNewIndex())
+	exit;
+
+$Curl              = new \Thymian\framework\Curl();
+$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex(), $Curl, $Configuration);
+$SmilMediaReplacer->findMatches();
+$SmilMediaReplacer->replace($PlayerModel->load($uuid));
+$IndexModel->saveIndex($uuid, $SmilMediaReplacer->getSmil());

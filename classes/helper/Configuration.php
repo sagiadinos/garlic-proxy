@@ -26,21 +26,21 @@ class Configuration
 	/**
 	 * @var string
 	 */
-	protected $system_path = '';
+	protected $system_dir = '';
 
 
-	public function __construct()
+	public function __construct($config_file, $system_dir)
 	{
-		$this->values = parse_ini_file('../configuration/main.ini', true);
-		$this->system_path = realpath("../");
+		$this->values     = parse_ini_file($config_file, true);
+		$this->system_dir = $system_dir;
 	}
 
 	/**
 	 * @return string
 	 */
-	public function getSystemPath()
+	public function getSystemDir()
 	{
-		return $this->system_path;
+		return $this->system_dir;
 	}
 
 	/**
@@ -51,13 +51,37 @@ class Configuration
 		return $this->values['index_server'];
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getHomeDomain()
+	{
+		return $this->values['home_domain'];
+	}
+
+
+	/**
+	 * @param $key
+	 *
+	 * @return string
+	 */
 	public function getFullPathValuesByKey($key)
+	{
+		return $this->system_dir.'/www/'.$this->getValuesByKey($key);
+	}
+
+	/**
+	 * @param $key
+	 *
+	 * @return string
+	 */
+	public function getValuesByKey($key)
 	{
 		if (!array_key_exists($key, $this->values['Paths']))
 		{
-			return '';
+			throwException($key. ' not exists');
 		}
 
-		return $this->system_path.'/www/'.$this->values['Paths'][$key];
+		return $this->values['Paths'][$key];
 	}
 }

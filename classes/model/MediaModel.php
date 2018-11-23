@@ -21,5 +21,16 @@ namespace Basil\model;
 
 class MediaModel extends BaseFileModel
 {
+	/**
+	 * @var string
+	 */
+	protected $player_media_path = '';
+
+	public function __construct($path)
+	{
+		$this->player_media_path = $path;
+		$this->createDirectoryIfNotExist($path);
+	}
+
 
 }
