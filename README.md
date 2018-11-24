@@ -3,8 +3,8 @@ Basil is a Proxy Web application for Digital Signage SMIL Player
 
 ## Description
 Sometimes you want to use several SMIL-Player in a internal network which shares same or partialy same content. 
-If you want to save bandwith or it is limited you can use basil-Proxy.
-Basil-proxy is created without a framework and do not need a database. It should run even on small IoT devices.
+If you want to save bandwith or it is limited you can use Basil-Proxy.
+Basil is lightweight and do not need a database. It will run even on small IoT devices.
 
 ## Requirements
 * PHP 5.6+
@@ -17,7 +17,7 @@ Basil-Proxy acts as an intermediary between SMIL players and a Digital Signage C
 
 The player are connecting/registering with Basil-Proxy.
 Basil-Proxy connects via cronjob with the CMS, downloads the SMIL-Indexes for all registered player and selects which media must be downloaded.
-It can help to reduce bandwith.
+It helps to reduce bandwith significantly.
 
 ## Currently Implemented Features
 * registering of SMIL Player
