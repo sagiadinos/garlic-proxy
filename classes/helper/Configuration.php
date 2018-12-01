@@ -17,6 +17,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 namespace Basil\helper;
 
 
+use PHPUnit\Exception;
+
 class Configuration
 {
 	/**
@@ -31,7 +33,17 @@ class Configuration
 
 	public function __construct($config_file, $system_dir)
 	{
+		if (!file_exists($config_file))
+		{
+			throw new \RuntimeException('Config file \''.$config_file.'\' not exists');
+		}
+
 		$this->values     = parse_ini_file($config_file, true);
+		if (empty($system_dir))
+		{
+			throw new \RuntimeException('System_dir cannot be empty');
+		}
+
 		$this->system_dir = $system_dir;
 	}
 
@@ -48,6 +60,10 @@ class Configuration
 	 */
 	public function getIndexServer()
 	{
+		if (!array_key_exists('index_server', $this->values))
+		{
+			throw new \RuntimeException('Key index_server not exists in config');
+		}
 		return $this->values['index_server'];
 	}
 
@@ -56,6 +72,10 @@ class Configuration
 	 */
 	public function getHomeDomain()
 	{
+		if (!array_key_exists('home_domain', $this->values))
+		{
+			throw new \RuntimeException('Key home_domain not exists in config');
+		}
 		return $this->values['home_domain'];
 	}
 
@@ -67,7 +87,7 @@ class Configuration
 	 */
 	public function getFullPathValuesByKey($key)
 	{
-		return $this->system_dir.'/www/'.$this->getValuesByKey($key);
+		return $this->getSystemDir().'/www/'.$this->getPathValuesByKey($key);
 	}
 
 	/**
@@ -75,11 +95,11 @@ class Configuration
 	 *
 	 * @return string
 	 */
-	public function getValuesByKey($key)
+	public function getPathValuesByKey($key)
 	{
 		if (!array_key_exists($key, $this->values['Paths']))
 		{
-			throwException($key. ' not exists');
+			throw new \RuntimeException($key. ' not exists');
 		}
 
 		return $this->values['Paths'][$key];

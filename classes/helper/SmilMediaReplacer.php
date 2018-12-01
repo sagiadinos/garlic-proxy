@@ -119,13 +119,13 @@ class SmilMediaReplacer
 			$md5             = trim($this->getCurl()->getResponseBody());
 			$extension       = pathinfo($url_path, PATHINFO_EXTENSION);
 			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$md5.'.'.$extension;
-			$this->relative_local_filepath = $this->getConfiguration()->getValuesByKey('media_path').'/'.$md5.'.'.$extension;
+			$this->relative_local_filepath = $this->getConfiguration()->getPathValuesByKey('media_path').'/'.$md5.'.'.$extension;
 		}
 		else // if not, then build a local path with filename
 		{
 			$filename        = pathinfo($url_path, PATHINFO_BASENAME);
 			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$filename;
-			$this->relative_local_filepath = $this->getConfiguration()->getValuesByKey('media_path').'/'.$filename;
+			$this->relative_local_filepath = $this->getConfiguration()->getPathValuesByKey('media_path').'/'.$filename;
 		}
 		return $this;
 	}
