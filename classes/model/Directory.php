@@ -15,36 +15,52 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
+
 namespace Basil\model;
 
-class BaseFileModel
-{
 
+class Directory
+{
 	/**
-	 * @param $filepath
-	 * @param $content
+	 * @param string $directory
 	 *
 	 * @return $this
 	 * @throws \Exception
 	 */
-	protected function saveFile($filepath, $content)
+	public function createDirectoryIfNotExist($directory)
 	{
-		if (file_put_contents($filepath, $content) === false)
-			throw new \RuntimeException('Can not create ' . $filepath);
+		if (is_file($directory))
+		{
+			throw new \RuntimeException('Directory of ' . $directory . ' can not created, because a file with this name already exists');
+		}
+
+		if (!is_dir($directory))
+		{
+			$this->create($directory);
+		}
+		else
+		{
+			if (!is_readable($directory))
+				throw new \RuntimeException('Directory of ' . $directory . ' is not readable');
+		}
+
 		return $this;
 	}
 
 	/**
-	 * @param $filepath
+	 * @param $directory
 	 *
-	 * @return string
+	 * @return $this
 	 * @throws \Exception
 	 */
-	protected function readContentofFile($filepath)
+	protected function create($directory)
 	{
-		if (!file_exists($filepath))
-			throw new \RuntimeException($filepath.' not exists');
+		if(!@mkdir($directory, 0775, true))
+			throw new \RuntimeException('Can not create directory ' . $directory);
 
-		return file_get_contents($filepath);
+		// AFAIK it should be not possible that this failed after a create
+		chmod($directory, 0775);
+		return $this;
 	}
+
 }

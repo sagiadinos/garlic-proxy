@@ -27,7 +27,6 @@ class IndexModel extends BaseFileModel
 	public function __construct($path)
 	{
 		$this->player_index_path = $path;
-		$this->createDirectoryIfNotExist($path);
 	}
 
 	/**

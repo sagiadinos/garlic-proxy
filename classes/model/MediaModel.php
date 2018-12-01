@@ -29,7 +29,6 @@ class MediaModel extends BaseFileModel
 	public function __construct($path)
 	{
 		$this->player_media_path = $path;
-		$this->createDirectoryIfNotExist($path);
 	}
 
 

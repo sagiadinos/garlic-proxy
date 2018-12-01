@@ -27,7 +27,6 @@ class PlayerModel extends BaseFileModel
 	public function __construct($path)
 	{
 		$this->player_register_path = $path;
-		$this->createDirectoryIfNotExist($path);
 	}
 
 	/**

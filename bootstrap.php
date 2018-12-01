@@ -33,3 +33,8 @@ $loader->register()
 	   ->addNamespace('\Basil',$system_dir.'/classes/');
 
 $Configuration  = new \Basil\helper\Configuration($system_dir.'/configuration/main.ini', $system_dir);
+
+$Directory      = new \Basil\model\Directory();
+$Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('player_path'));
+$Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('index_path'));
+$Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('media_path'));
