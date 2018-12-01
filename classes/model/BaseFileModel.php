@@ -29,7 +29,7 @@ class BaseFileModel
 	 */
 	protected function saveFile($filepath, $content)
 	{
-		if (file_put_contents($filepath, $content) === false)
+		if (@file_put_contents($filepath, $content) === false)
 			throw new \RuntimeException('Can not create ' . $filepath);
 		return $this;
 	}

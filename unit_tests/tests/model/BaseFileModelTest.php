@@ -21,5 +21,91 @@ use PHPUnit\Framework\TestCase;
 
 class BaseFileModelTest extends TestCase
 {
+	/**
+	 * @var string
+	 */
+	protected $path_to_test_directory;
+
+	protected function tearDown()
+	{
+		PHPUnitUtils::deleteRecursive($this->getTestDirectoryPath());
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testSaveFile()
+	{
+		$test_file = $this->getTestDirectoryPath().'/test_file';
+
+		$BaseModel = new BaseFileModel();
+		$Method = PHPUnitUtils::getProtectedMethod($BaseModel, 'saveFile');
+		$Method->invoke($BaseModel, $test_file, 'dummy');
+		$this->assertTrue(file_exists($test_file));
+		$this->assertEquals('dummy', file_get_contents($test_file));
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testSaveFileFailed()
+	{
+		$test_file = '/etc/test_file';
+
+		$BaseModel = new BaseFileModel();
+		$Method = PHPUnitUtils::getProtectedMethod($BaseModel, 'saveFile');
+
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage('Can not create ' . $test_file);
+
+		$Method->invoke($BaseModel, $test_file, 'dummy');
+		$this->assertFalse(file_exists($test_file));
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testReadContentofFile()
+	{
+		$test_file = $this->getTestDirectoryPath().'/test_file';
+		$expected  = 'dummy text';
+		file_put_contents($test_file, $expected);
+
+		$BaseModel = new BaseFileModel();
+		$Method   = PHPUnitUtils::getProtectedMethod($BaseModel, 'readContentofFile');
+		$returned = $Method->invoke($BaseModel, $test_file);
+		$this->assertEquals($expected, $returned);
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testReadContentofFileFailed()
+	{
+		$test_file = 'not_existing_file';
+
+		$BaseModel = new BaseFileModel();
+		$Method = PHPUnitUtils::getProtectedMethod($BaseModel, 'readContentofFile');
+
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage($test_file.' not exists');
+
+		$Method->invoke($BaseModel, $test_file, '');
+	}
+
+	// ===================== helper methods =============================================================================
+
+	/**
+	 * @return string
+	 */
+	protected function getTestDirectoryPath()
+	{
+		if (is_null($this->path_to_test_directory))
+		{
+			$this->path_to_test_directory = _ResourcesPath.'/directory_tests';
+		}
+
+		return $this->path_to_test_directory;
+	}
 
 }

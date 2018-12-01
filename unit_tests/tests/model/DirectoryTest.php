@@ -28,22 +28,7 @@ class DirectoryTest extends TestCase
 
 	protected function tearDown()
 	{
-		$dir      = $this->getTestDirectoryPath();
-		$iterator    = new RecursiveIteratorIterator(
-						new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
-						RecursiveIteratorIterator::CHILD_FIRST
-		);
-		foreach ($iterator as $path)
-		{
-			if ($path->isDir())
-			{
-				rmdir($path->__toString());
-			}
-			else
-			{
-				unlink($path->__toString());
-			}
-		}
+		PHPUnitUtils::deleteRecursive($this->getTestDirectoryPath());
 	}
 
 	/**
@@ -111,6 +96,5 @@ class DirectoryTest extends TestCase
 
 		return $this->path_to_test_directory;
 	}
-
 
 }

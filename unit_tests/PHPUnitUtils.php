@@ -57,4 +57,26 @@ class PHPUnitUtils
 	{
 		return self::getProtectedProperty($obj, $name);
 	}
+
+	/**
+	 * @param $dir
+	 */
+	public static function deleteRecursive($dir)
+	{
+		$iterator    = new RecursiveIteratorIterator(
+			new RecursiveDirectoryIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS),
+			RecursiveIteratorIterator::CHILD_FIRST
+		);
+		foreach ($iterator as $path)
+		{
+			if ($path->isDir())
+			{
+				rmdir($path->__toString());
+			}
+			else
+			{
+				unlink($path->__toString());
+			}
+		}
+	}
 }
