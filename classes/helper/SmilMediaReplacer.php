@@ -19,6 +19,18 @@ namespace Basil\helper;
 
 use Thymian\framework\Curl;
 
+/**
+ * Concept:
+ *
+ * files are downloaded from CMS
+ * If CMS support md5 hashes, te media files will downloaded and renamed as md5.
+ * With this way we can recognize same files even if they had a different names on CMS
+ *
+ * If CMS not support md5, the files will be downloaded with their original name.
+ *
+ * Class SmilMediaReplacer
+ * @package Basil\helper
+ */
 class SmilMediaReplacer
 {
 

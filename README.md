@@ -24,11 +24,12 @@ It helps to reduce bandwith significantly.
 * testing environment
 * downloading SMIL-Index from Basil-Proxy
 * downloading of SMIL-Index from CMS
-
-## ToDo Features
 * parsing SMIL
+* downloading media
+
+## ToDo Features for later versions
 * check and download media and firmware updates if neccesary
 
-
 ## Status
-Basil-Proxy is in a early stage and yet not feature complete.
+Basil-Proxy is feature complete in backend.
+currently I write unit tests for refactoring and testing
