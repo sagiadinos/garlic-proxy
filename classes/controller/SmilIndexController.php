@@ -44,7 +44,7 @@ class SmilIndexController extends BaseController
 	 * @param Configuration $config
 	 * @param Curl          $Curl
 	 */
-	function __construct(PlayerModel $playerModel, IndexModel $indexModel, Configuration $config, \Thymian\framework\Curl $Curl)
+	function __construct(PlayerModel $playerModel, IndexModel $indexModel, Configuration $config, Curl $Curl)
 	{
 		$this->setCurl($Curl)
 			 ->setIndexModel($indexModel)

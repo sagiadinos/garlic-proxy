@@ -22,8 +22,13 @@ class ViewController extends BaseController
 	{
 		$list       = $this->getModel()->scanRegisteredPlayer();
 		$system_dir = $this->getConfiguration()->getSystemDir();
+
+		$view_file  = $system_dir.'/view/'.$view.'.php';
+		if (!file_exists($view_file))
+			throw new \RuntimeException($view_file . ' not found');
+
 		require_once ($system_dir.'/templates/header.php');
-		require_once ($system_dir.'/view/'.$view.'.php');
+		require_once ($view_file);
 		require_once ($system_dir.'/templates/footer.php');
 	}
 }
