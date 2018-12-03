@@ -101,8 +101,9 @@ class SmilIndexController extends BaseController
 	 */
 	protected function requestHead()
 	{
-		$this->getCurl()->setRequestMethodHead();
-		$this->getCurl()->curlExec();
+		$this->getCurl()
+			 ->setRequestMethodHead()
+			 ->curlExec();
 		return $this;
 	}
 
