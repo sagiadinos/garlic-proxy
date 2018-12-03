@@ -14,16 +14,64 @@ You should have received a copy of the GNU Affero General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-namespace Basil;
+namespace Basil\controller;
 
-class ViewController extends BaseController
+use Basil\helper\Configuration;
+use Basil\model\PlayerModel;
+
+class BaseController
 {
-	public function view($view = 'list')
+	/**
+	 * @var PlayerModel
+	 */
+	protected $Model;
+	/**
+	 * @var Configuration
+	 */
+	protected $Configuration;
+
+	public function __construct(PlayerModel $model, Configuration $config)
 	{
-		$list        = $this->getModel()->scanRegisteredPlayer();
-		$system_dir = $this->getConfiguration()->getSystemDir();
-		require_once ($system_dir.'/templates/header.php');
-		require_once ($system_dir.'/view/'.$view.'.php');
-		require_once ($system_dir.'/templates/footer.php');
+		$this->setModel($model)
+			 ->setConfiguration($config);
 	}
+
+	/**
+	 * @return PlayerModel
+	 */
+	public function getModel()
+	{
+		return $this->Model;
+	}
+
+	/**
+	 * @param $Model
+	 *
+	 * @return $this
+	 */
+	public function setModel(PlayerModel $Model)
+	{
+		$this->Model = $Model;
+		return $this;
+	}
+
+	/**
+	 * @return Configuration
+	 */
+	public function getConfiguration()
+	{
+		return $this->Configuration;
+	}
+
+	/**
+	 * @param $Configuration
+	 *
+	 * @return $this
+	 */
+	public function setConfiguration(Configuration $Configuration)
+	{
+		$this->Configuration = $Configuration;
+		return $this;
+	}
+
 }

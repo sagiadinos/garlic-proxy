@@ -105,6 +105,7 @@ class ConfigurationTest extends TestCase
 		$this->assertEquals('./systemdir/www/var/player', $Helper->getFullPathValuesByKey('player_path'));
 		$this->assertEquals('./systemdir/www/var/indexes', $Helper->getFullPathValuesByKey('index_path'));
 		$this->assertEquals('./systemdir/www/var/media', $Helper->getFullPathValuesByKey('media_path'));
+		$this->assertEquals('./systemdir/www/resources', $Helper->getFullPathValuesByKey('resources_path'));
 	}
 
 	/**
@@ -118,6 +119,7 @@ class ConfigurationTest extends TestCase
 		$this->assertEquals('var/player', $Helper->getPathValuesByKey('player_path'));
 		$this->assertEquals('var/indexes', $Helper->getPathValuesByKey('index_path'));
 		$this->assertEquals('var/media', $Helper->getPathValuesByKey('media_path'));
+		$this->assertEquals('resources', $Helper->getPathValuesByKey('resources_path'));
 	}
 
 	/**

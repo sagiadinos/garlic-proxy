@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 $table  = '';
 $UserAgent   = new \Basil\helper\UserAgent();
-$PlayerModel = $this->getModel(); // Do not forget, that we are insite of the ViewController!
+$PlayerModel = $this->getModel(); // Do not forget, that we are inside of the ViewController!
 foreach ($list as $file_info)
 {
 	if (!$file_info->isDot())

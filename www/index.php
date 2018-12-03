@@ -32,12 +32,12 @@ try
 	// check if it is a DS-device or a Web browser
 	if ($UserAgent->isDsPlayer())
 	{
-		$Controller = new \Basil\PlayerController($PlayerModel, $Configuration, $UserAgent);
+		$Controller = new \Basil\controller\PlayerController($PlayerModel, $Configuration, $UserAgent);
 		$Controller->dispatch();
 	}
 	else // user Browser
 	{
-		$Controller = new \Basil\ViewController($PlayerModel, $Configuration);
+		$Controller = new \Basil\controller\ViewController($PlayerModel, $Configuration);
 		// validation ToDo: write a small lib
 		if (isset($_GET['site']) && ($_GET['site'] == 'list' || $_GET['site'] == 'get_index'))
 			$site = $_GET['site'];
