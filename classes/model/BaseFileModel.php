@@ -22,6 +22,31 @@ class BaseFileModel
 
 	/**
 	 * @param $filepath
+	 *
+	 * @return bool
+	 */
+	public function fileExists($filepath)
+	{
+		return file_exists($filepath);
+	}
+
+	/**
+	 * @param $filepath
+	 *
+	 * @return string
+	 * @throws \RuntimeException
+	 */
+	public function lastModifiedDateTime($filepath)
+	{
+		$timestamp = filemtime($filepath);
+		if ($timestamp === false)
+			throw new \RuntimeException("File '$filepath' not readable");
+
+		return date('Y-m-d H:i:s', $timestamp);
+	}
+
+	/**
+	 * @param $filepath
 	 * @param $content
 	 *
 	 * @return $this

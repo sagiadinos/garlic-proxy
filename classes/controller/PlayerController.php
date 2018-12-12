@@ -52,14 +52,11 @@ class PlayerController extends BaseController
 
 	public function dispatch()
 	{
-		if ($this->getModel()->isRegistered($this->getUserAgent()->getUuid()))
-		{
-			$this->sendSmilIndex();
-		}
-		else
+		if (!$this->getModel()->isRegistered($this->getUserAgent()->getUuid()))
 		{
 			$this->registerPlayer();
 		}
+		$this->sendSmilIndex();
 		return $this;
 	}
 

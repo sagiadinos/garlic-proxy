@@ -1,8 +1,21 @@
 # basil-proxy
 Basil is a Proxy Web application for Digital Signage SMIL Player
 
+## Why a special proxy solution?
+
+Sometimes you need to operate a group of Digital Signage Player (e.g. in a supermarket), but you have only a slow internet connection.
+In some cases a common proxy solution like [mod_proxy](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html) could help.
+But there are a few cases where that's not enough.
+
+### Basil can be useful if..
+
+* you have same files with different names e.g. for reporting or security reasons. A standard proxy cannot differentiate in this case. Basil can! This results in redundancy not neccessary downloads.
+* you want to update content at specific times (e.g. only during the night), but your clients do not support this.
+* you don't want the clients connecting direct to internet 
+* you generally need more control over the content update process 
+
 ## Description
-Sometimes you want to use several SMIL-Player in a internal network which shares same or partialy same content. 
+Basil act as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy)
 If you want to save bandwith or it is limited you can use Basil-Proxy.
 Basil is lightweight and do not need a database. It will run even on small IoT devices.
 
@@ -11,13 +24,6 @@ Basil is lightweight and do not need a database. It will run even on small IoT d
 * php-curl
 * Webserver (Apache, nginx etc)
 * To use full possible caching capabilities the corresponding Digital Signage CMS should create additional md5 files for every media
-
-## Theoretical concept:
-Basil-Proxy acts as an intermediary between SMIL players and a Digital Signage CMS.
-
-The player are connecting/registering with Basil-Proxy.
-Basil-Proxy connects via cronjob with the CMS, downloads the SMIL-Indexes for all registered player and selects which media must be downloaded.
-It helps to reduce bandwith significantly.
 
 ## Currently Implemented Features
 * registering of SMIL Player

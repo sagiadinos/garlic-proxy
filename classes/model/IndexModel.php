@@ -29,6 +29,23 @@ class IndexModel extends BaseFileModel
 		$this->player_index_path = $path;
 	}
 
+
+	/**
+	 * @param string $uuid
+	 *
+	 * @return string
+	 */
+	public function lastUpdate($uuid)
+	{
+		$filepath = $this->player_index_path.'/'.$uuid.'.smil';
+		if ($this->fileExists($filepath))
+			$datetime = $this->lastModifiedDateTime($this->player_index_path);
+		else
+			$datetime = '000-00-00 00:00:00';
+		return $datetime;
+	}
+
+
 	/**
 	 * @param $uuid
 	 * @param $content

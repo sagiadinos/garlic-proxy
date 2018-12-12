@@ -81,26 +81,33 @@ class SmilMediaReplacer
 	{
 		preg_match_all('/src\s*=\s*"(.+?)"/', $this->getSmil(), $matches);
 		// we must eliminate eventually double matches cause of prefetch-Tag
-		// not so easy handle with regex, cause we need to include an ref-tag (widgets use it for example)
+		// This is complicated to handle with regex, cause we need to include an ref-tag (widgets use it for example)
 		// the string ref also exists as substring in p=>ref<=etch
-		// so we use array_unique
+		// so we use a more simple regex with array_unique
 		$this->setMatches(array_unique($matches[1]));
 		return $this->getMatches();
 	}
 
+	/**
+	 * @param $user_agent
+	 *
+	 * @return $this
+	 */
 	public function replace($user_agent)
 	{
-		foreach ($this->getMatches() as $uri)
+		$matches = $this->getMatches();
+		foreach ($matches as $uri)
 		{
-			if (strpos($uri, $this->getConfiguration()->getHomeDomain()) === false)
+			$full_uri = $this->buildUri($uri); // for the case uri is relative
+			if (strpos($full_uri, $this->getConfiguration()->getHomeDomain()) === false)
 				continue;
 
 			$this->getCurl()->setUserAgent($user_agent);
 
-			$this->determineLocalFilePaths($uri);
+			$this->determineLocalFilePaths($full_uri);
 
 			// replace the smil
-			if ($this->downloadFile($uri, $this->absolute_local_filepath))
+			if ($this->downloadFile($full_uri, $this->absolute_local_filepath))
 			{
 				$this->setSmil(str_replace($uri, $this->relative_local_filepath, $this->getSmil()));
 			}
@@ -175,10 +182,20 @@ class SmilMediaReplacer
 	 */
 	protected function buildMd5Uri($uri)
 	{
-		$md5_uri = $uri.'.md5';
+		return $this->buildUri($uri.'.md5');
+	}
+
+
+	/**
+	 * @param $uri
+	 *
+	 * @return string
+	 */
+	protected function buildUri($uri)
+	{
 		if ($this->isUriRelative($uri))
-			$md5_uri = $this->getConfiguration()->getIndexServer().'/'.$md5_uri;
-		return $md5_uri;
+			$uri = $this->getConfiguration()->getIndexServer().'/'.$uri;
+		return $uri;
 	}
 
 	/**

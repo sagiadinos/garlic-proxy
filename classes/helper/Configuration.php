@@ -60,12 +60,31 @@ class Configuration
 	 */
 	public function getIndexServer()
 	{
-		if (!array_key_exists('index_server', $this->values))
+		$uri = $this->getIndexServerUri();
+		$ar = parse_url($uri);
+		if (array_key_exists('scheme', $ar))
 		{
-			throw new \RuntimeException('Key index_server not exists in config');
+			$scheme = $ar['scheme'];
 		}
-		return $this->values['index_server'];
+		else
+		{
+			$scheme = 'http';
+		}
+		return $scheme.'://'.$ar['host'];
 	}
+
+	/**
+	 * @return string
+	 */
+	public function getIndexServerUri()
+	{
+		if (!array_key_exists('index_server_uri', $this->values))
+		{
+			throw new \RuntimeException('Key index_server_uri not exists in config');
+		}
+		return $this->values['index_server_uri'];
+	}
+
 
 	/**
 	 * @return string

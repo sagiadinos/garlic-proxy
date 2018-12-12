@@ -21,25 +21,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 $table  = '';
 $UserAgent   = new \Basil\helper\UserAgent();
 $PlayerModel = $this->getModel(); // Do not forget, that we are inside of the ViewController!
+$IndexModel  = new \Basil\model\IndexModel($this->getConfiguration()->getFullPathValuesByKey('index_path'));
 foreach ($list as $file_info)
 {
 	if (!$file_info->isDot())
 	{
 		$UserAgent->setInfoFromAgentString($PlayerModel->load($file_info->getBasename('.reg')));
 		$player_name = $UserAgent->getName();
+		$uuid        = $file_info->getBasename('.reg');
 
 		$table .= '
-		<tr>
-			<td><button>&#128472;</button> '.$player_name.'</td>
-			<td>'.$file_info->getFilename().'</td>
-			<td>'.date('Y-m-d H:i:s', $file_info->getCTime()).'</td>
-			<td>'.date('Y-m-d H:i:s', $file_info->getATime()).'</td>
+			
+		<tr id="uuid_'.$uuid.'">
+			<td><button onclick="refreshIndex(\''.$uuid.'\')" title="get index now">&#128472;</button> '.$player_name.'</td>
+			<td class="filename">'.$file_info->getFilename().'</td>
+			<td class="create_datetime">'.date('Y-m-d H:i:s', $file_info->getCTime()).'</td>
+			<td class="last_update">'.$IndexModel->lastUpdate($uuid).'</td>
 		</tr>';
 	}
 }
 if ($table != '')
 	$table =  '
-<button>refresh all</button>
+<!-- not implemented <button>refresh all</button> -->
 <table>
 	<thead>
 		<tr>
@@ -50,16 +53,18 @@ if ($table != '')
 				Filename
 			</th>
 			<th>
-				created
+				registered
 			</th>
 			<th>
-				last access
+				last index update
 			</th>
 		</tr>
 	</thead>
 	<tbody>'
 		.$table.
 	'</tbody>
-</table>';
+</table>
+<script src="resources/js/index.js" type="text/javascript"></script>
+';
 
 echo $table;

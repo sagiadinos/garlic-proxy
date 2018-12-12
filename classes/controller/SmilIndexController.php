@@ -50,7 +50,7 @@ class SmilIndexController extends BaseController
 			 ->setIndexModel($indexModel)
 			 ->setConfiguration($config);
 
-		$Curl->setUrl($this->getConfiguration()->getIndexServer());
+		$Curl->setUrl($this->getConfiguration()->getIndexServerUri());
 		parent::__construct($playerModel, $config);
 	}
 

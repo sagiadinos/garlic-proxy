@@ -23,7 +23,7 @@ try
 
 	// we can put here a cli parameter lib if necessary
 	// currently we will get all the indexes from cmd
-	require_once ('cli/get_indexes.php');
+	require_once('cli/get_indexes.php');
 
 }
 catch(\Exception $e)
