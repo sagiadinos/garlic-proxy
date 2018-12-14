@@ -9,9 +9,9 @@
     </head>
     <body>
         <seq repeatCount="indefinite">
-            <img src="resources/connected.jpg" dur="120" fit="fill"/>
-            <img src="resources/connected.jpg" dur="120" fit="fill"/>
-            <img src="resources/connected.jpg" dur="120" fit="fill"/>
+            <img src="resources/media/connected.jpg" dur="120" fit="fill"/>
+            <img src="resources/media/connected.jpg" dur="120" fit="fill"/>
+            <img src="resources/media/connected.jpg" dur="120" fit="fill"/>
         </seq>
     </body>
 </smil>

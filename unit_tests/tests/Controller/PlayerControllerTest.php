@@ -44,8 +44,8 @@ class PlayerControllerTest extends TestCase
 		$Controller = $this->initMockAllConstructorInjections();
 		$this->PlayerModelMock->expects($this->once())->method('isRegistered')->willReturn(false);
 		$this->PlayerModelMock->expects($this->once())->method('register');
-		$this->UserAgentMock->expects($this->exactly(2))->method('getUuid')->willReturn('has_all_media');
-		$this->ConfigMock->expects($this->never())->method('getFullPathValuesByKey');
+		$this->UserAgentMock->expects($this->exactly(3))->method('getUuid')->willReturn('has_all_media');
+		$this->ConfigMock->expects($this->exactly(2))->method('getFullPathValuesByKey');
 		$Controller->dispatch();
 	}
 

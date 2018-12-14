@@ -52,19 +52,44 @@ class ConfigurationTest extends TestCase
 		$ini = _ResourcesPath.'/configuration/main.ini';
 		$Helper = new Configuration($ini, './systemdir');
 
-		$this->assertEquals('localhost', $Helper->getIndexServer());
+		$this->assertEquals('http://localhost', $Helper->getIndexServer());
 	}
 
 	/**
 	 * @group units
 	 */
-	public function testGetIndexServerFail()
+	public function testGetIndexServerFailNoScheme()
+	{
+		$ini = _ResourcesPath.'/configuration/no_scheme.ini';
+		$Helper = new Configuration($ini, './systemdir');
+
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage('No Scheme (http/https) in index_server_uri found');
+		$Helper->getIndexServer();
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testGetIndexServerUri()
+	{
+		$ini = _ResourcesPath.'/configuration/main.ini';
+		$Helper = new Configuration($ini, './systemdir');
+
+		$this->assertEquals('http://localhost/some/path/index.smil', $Helper->getIndexServerUri());
+	}
+
+
+	/**
+	 * @group units
+	 */
+	public function testGetIndexServerUriFail()
 	{
 		$ini = _ResourcesPath.'/configuration/empty.ini';
 		$Helper = new Configuration($ini, './systemdir');
 
 		$this->expectException(RuntimeException::class);
-		$this->expectExceptionMessage('Key index_server not exists in config');
+		$this->expectExceptionMessage('Key index_server_uri not exists in config');
 		$Helper->getIndexServer();
 	}
 

@@ -62,15 +62,15 @@ class Configuration
 	{
 		$uri = $this->getIndexServerUri();
 		$ar = parse_url($uri);
-		if (array_key_exists('scheme', $ar))
+		// Scheme must be set, cause a construction like localhost/path/to/index or 192.168.1.1/path/tom/index
+		// will be not not determine IP or localhost as host
+		// neither it will be recognized as URL/URI
+		if (!array_key_exists('scheme', $ar))
 		{
-			$scheme = $ar['scheme'];
+			throw new \RuntimeException('No Scheme (http/https) in index_server_uri found');
 		}
-		else
-		{
-			$scheme = 'http';
-		}
-		return $scheme.'://'.$ar['host'];
+
+		return $ar['scheme'].'://'.$ar['host'];
 	}
 
 	/**
