@@ -30,6 +30,33 @@ class IndexModelTest extends \PHPUnit\Framework\TestCase
 		PHPUnitUtils::deleteRecursive($this->getTestDirectoryPath());
 	}
 
+
+	/**
+	 * @group units
+	 */
+	public function testLastUpdateIndexExists()
+	{
+		$uuid       = 'has_all_media';
+		$path       = _ResourcesPath.'/indexes';
+		$IndexModel = new IndexModel($path);
+		$datetime   = $IndexModel->lastUpdate($uuid);
+
+		$this->assertTrue($datetime != '0000-00-00 00:00:00');
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testLastUpdateIndexNotExists()
+	{
+		$uuid       = 'no-no-no';
+		$path       = 'NoPath';
+		$IndexModel = new IndexModel($path);
+
+		$this->assertEquals('0000-00-00 00:00:00', $IndexModel->lastUpdate($uuid));
+	}
+
+
 	/**
 	 * @group units
 	 */

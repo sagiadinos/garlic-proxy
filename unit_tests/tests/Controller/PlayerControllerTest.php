@@ -39,14 +39,17 @@ class PlayerControllerTest extends TestCase
 	/**
 	 * @group units
 	 */
-	public function testDispatchForPlayer()
+	public function testDispatchForRegisterPlayer()
 	{
 		$Controller = $this->initMockAllConstructorInjections();
 		$this->PlayerModelMock->expects($this->once())->method('isRegistered')->willReturn(false);
 		$this->PlayerModelMock->expects($this->once())->method('register');
-		$this->UserAgentMock->expects($this->exactly(3))->method('getUuid')->willReturn('has_all_media');
-		$this->ConfigMock->expects($this->exactly(2))->method('getFullPathValuesByKey');
+		$this->UserAgentMock->expects($this->exactly(3))->method('getUuid')->willReturn('not_exist');
+		$this->ConfigMock->expects($this->exactly(2))->method('getFullPathValuesByKey')->willReturn('resources'); // second call is relevat
+		ob_start();
 		$Controller->dispatch();
+		$send_smil = ob_get_clean();
+		$this->assertEquals(file_get_contents(_TestLibPath.'/../www/resources/smil/wait.smil'), $send_smil);
 	}
 
 	/**

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <smil>
     <head>
-        <meta name="title" content="Standard Playliste für frisch registrierte Player" />
+        <meta name="title" content="Standard playlist für new registered player" />
         <meta http-equiv="Refresh" content="120" />
         <layout>
             <root-layout backgroundColor="#000000" width="1280" height="720" />

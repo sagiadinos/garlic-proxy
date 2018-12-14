@@ -41,7 +41,7 @@ class IndexModel extends BaseFileModel
 		if ($this->fileExists($filepath))
 			$datetime = $this->lastModifiedDateTime($this->player_index_path);
 		else
-			$datetime = '000-00-00 00:00:00';
+			$datetime = '0000-00-00 00:00:00';
 		return $datetime;
 	}
 
