@@ -23,8 +23,6 @@ $player_list     = $PlayerModel->scanRegisteredPlayer();
 $IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
 $IndexController = new \Basil\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
 
-$MediaModel      = new \Basil\model\MediaModel($Configuration->getFullPathValuesByKey('index_path'));
-
 if (isset($_GET['uuid']))
 	$uuid = strip_tags($_GET['uuid']); //
 else

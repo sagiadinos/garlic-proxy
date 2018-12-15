@@ -34,6 +34,37 @@ class BaseFileModelTest extends TestCase
 	/**
 	 * @group units
 	 */
+	public function testLastModifiedDateTime()
+	{
+		$test_file = _ResourcesPath.'/media/image2.jpg';
+
+		$BaseModel = new BaseFileModel();
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage("File '".$test_file."' not readable");
+
+		$this->assertTrue(strlen($BaseModel->lastModifiedDateTime($test_file)) == 19); // 0000-00-00 00:00:00 => 19 characters
+
+	}
+
+
+	/**
+	 * @group units
+	 */
+	public function testLastModifiedDateTimeFailed()
+	{
+		$test_file = $this->getTestDirectoryPath().'/nothing.txt';
+
+		$BaseModel = new BaseFileModel();
+		$this->expectException(RuntimeException::class);
+		$this->expectExceptionMessage("File '".$test_file."' not readable");
+
+		$BaseModel->lastModifiedDateTime($test_file);
+
+	}
+
+	/**
+	 * @group units
+	 */
 	public function testSaveFile()
 	{
 		$test_file = $this->getTestDirectoryPath().'/test_file';

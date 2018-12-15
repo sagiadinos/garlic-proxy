@@ -38,7 +38,7 @@ class BaseFileModel
 	 */
 	public function lastModifiedDateTime($filepath)
 	{
-		$timestamp = filemtime($filepath);
+		$timestamp = @filemtime($filepath);
 		if ($timestamp === false)
 			throw new \RuntimeException("File '$filepath' not readable");
 

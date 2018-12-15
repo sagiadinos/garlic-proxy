@@ -14,22 +14,4 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
-
-
-namespace Basil\model;
-
-
-class MediaModel extends BaseFileModel
-{
-	/**
-	 * @var string
-	 */
-	protected $player_media_path = '';
-
-	public function __construct($path)
-	{
-		$this->player_media_path = $path;
-	}
-
-
-}
+echo 'I am the get_index.php';
