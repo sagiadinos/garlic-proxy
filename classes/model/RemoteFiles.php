@@ -77,6 +77,9 @@ class RemoteFiles
 	 */
 	public function isUriForDownload($uri)
 	{
+		if (strpos($uri, 'adapi') !== false)
+			return false;
+
 		$this->full_uri = $this->buildFullUri($uri); // concat domain.tld for the case uri is relative
 
 		if (strpos($this->full_uri, $this->getConfiguration()->getHomeDomain()) === false)
@@ -141,6 +144,7 @@ class RemoteFiles
 	{
 		$md5_uri = $this->buildMd5Uri($this->full_uri);
 		$this->getCurl()
+ 			 ->setFileDownload(false)
 			 ->setUrl($md5_uri)
 			 ->curlExec(false)
 		;

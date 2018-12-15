@@ -57,6 +57,18 @@ class RemoteFilesTest extends TestCase
 		$this->assertFalse($Model->isUriForDownload($uri));
 	}
 
+	/**
+	 * @group units
+	 */
+	public function testIsUriForDownloadReturnFalseCauseAdapi()
+	{
+		$Model = $this->initMockAllConstructorInjections();
+		$this->ConfigMock->expects($this->never())->method('getHomeDomain');
+
+		$uri   = 'adapi:blankScreen';
+		$this->assertFalse($Model->isUriForDownload($uri));
+	}
+
 
 	/**
 	 * @group units

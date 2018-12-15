@@ -50,7 +50,6 @@ class AsyncControllerTest extends \PHPUnit\Framework\TestCase
 		$this->assertEquals($expected, $returned);
 	}
 
-
 	/**
 	 * @group units
 	 */

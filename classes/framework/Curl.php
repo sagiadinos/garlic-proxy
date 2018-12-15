@@ -405,6 +405,7 @@ class Curl
 
 		if ($this->isFileDownload())
 		{
+			curl_setopt($this->curl_handle, CURLOPT_FILE, NULL);
 			fclose($this->file_handle);
 			$this->setFileDownload(false);
 

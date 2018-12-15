@@ -18,8 +18,6 @@
 $PlayerModel   = $this->getModel(); // Do not forget, that we are inside of the AsyncController
 $Configuration = $this->getConfiguration();
 
-$player_list     = $PlayerModel->scanRegisteredPlayer();
-
 $IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
 $IndexController = new \Basil\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
 
@@ -35,7 +33,7 @@ if (!$IndexController->isNewIndex())
 $Curl              = new \Thymian\framework\Curl();
 $Curl->setUserAgent($PlayerModel->load($uuid));
 $RemoteFiles       = new \Basil\model\RemoteFiles($Curl, $Configuration);
-$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex(), $Curl, $Configuration);
+$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex());
 $SmilMediaReplacer->findMatches();
 $SmilMediaReplacer->replace($RemoteFiles);
 $IndexModel->saveIndex($uuid, $SmilMediaReplacer->getSmil());
