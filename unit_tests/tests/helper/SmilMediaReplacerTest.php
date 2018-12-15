@@ -80,8 +80,8 @@ class SmilMediaReplacerTest extends TestCase
 
 		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
 		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(false);
-		$RemoteFilesMock->expects($this->never())->method('downloadFile')->willReturn(true);
-		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');
+		$RemoteFilesMock->expects($this->never())->method('downloadFile');
+		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath');
 
 		$Helper->replace($RemoteFilesMock);
 
@@ -89,6 +89,30 @@ class SmilMediaReplacerTest extends TestCase
 
 		$this->assertContains($expected, $Helper->getSmil());
 	}
+
+	/**
+	 * @group units
+	 */
+	public function testReplaceEmpty()
+	{
+		$smil   = '<video region="screen" src="" soundLevel="100%" fit="fill" title="PT_Oktoberfest_2016.ts">';
+		$Helper = new SmilMediaReplacer($smil);
+		$method = \PHPUnitUtils::getProtectedMethod($Helper, 'setMatches');
+		$data   = array(0  => '');
+		$method->invoke($Helper, $data);
+
+		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(false);
+		$RemoteFilesMock->expects($this->never())->method('downloadFile');
+		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath');
+
+		$Helper->replace($RemoteFilesMock);
+
+		$expected = $smil;
+
+		$this->assertContains($expected, $Helper->getSmil());
+	}
+
 
 	/**
 	 * @group units

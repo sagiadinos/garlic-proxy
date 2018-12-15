@@ -24,7 +24,7 @@ use Thymian\framework\Curl;
  * Concept:
  *
  * files are downloaded from CMS
- * If CMS support md5 hashes, te media files will downloaded and renamed as md5.
+ * If CMS support md5 hashes, the media files will downloaded and renamed as md5.
  * With this way we can recognize same files even if they had a different names on CMS
  *
  * If CMS not support md5, the files will be downloaded with their original name.
@@ -71,38 +71,13 @@ class RemoteFiles
 	}
 
 	/**
-	 * @return bool
-	 */
-	public function downloadFile()
-	{
-		if (file_exists($this->absolute_local_filepath))
-		{
-			return true;
-		}
-
-		$this->getCurl()
-			 ->setUrl($this->full_uri)
-			 ->setFileDownload(true)
-			 ->setLocalFilepath($this->absolute_local_filepath)
-			 ->curlExec(false)
-		;
-
-		if (!file_exists($this->absolute_local_filepath))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
 	 * @param $uri
 	 *
 	 * @return bool
 	 */
 	public function isUriForDownload($uri)
 	{
-		$this->full_uri = $this->buildUri($uri); // concat domain.tld for the case uri is relative
+		$this->full_uri = $this->buildFullUri($uri); // concat domain.tld for the case uri is relative
 
 		if (strpos($this->full_uri, $this->getConfiguration()->getHomeDomain()) === false)
 		{
@@ -137,6 +112,31 @@ class RemoteFiles
 	/**
 	 * @return bool
 	 */
+	public function downloadFile()
+	{
+		if (file_exists($this->absolute_local_filepath))
+		{
+			return true;
+		}
+
+		$this->getCurl()
+			 ->setUrl($this->full_uri)
+			 ->setFileDownload(true)
+			 ->setLocalFilepath($this->absolute_local_filepath)
+			 ->curlExec(false)
+		;
+
+		if (!file_exists($this->absolute_local_filepath))
+		{
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * @return bool
+	 */
 	protected function hasMd5File()
 	{
 		$md5_uri = $this->buildMd5Uri($this->full_uri);
@@ -166,7 +166,7 @@ class RemoteFiles
 	 */
 	protected function buildMd5Uri($uri)
 	{
-		return $this->buildUri($uri.'.md5');
+		return $this->buildFullUri($uri.'.md5');
 	}
 
 
@@ -175,7 +175,7 @@ class RemoteFiles
 	 *
 	 * @return string
 	 */
-	protected function buildUri($uri)
+	protected function buildFullUri($uri)
 	{
 		if ($this->isUriRelative($uri))
 			$uri = $this->getConfiguration()->getIndexServer().'/'.$uri;
@@ -189,7 +189,7 @@ class RemoteFiles
 	 */
 	protected function isUriRelative($uri)
 	{
-		return ($uri != '/' && strpos($uri,'http') === false);
+		return ($uri != '/' && strpos($uri,'http' ) === false && strpos($uri,'ftp' ) === false);
 	}
 
 	/**

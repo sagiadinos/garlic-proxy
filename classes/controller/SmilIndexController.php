@@ -28,10 +28,6 @@ class SmilIndexController extends BaseController
 	 */
 	protected $Curl;
 	/**
-	 * @var IndexModel
-	 */
-	protected $IndexModel;
-	/**
 	 * @var bool
 	 */
 	protected $new_index = false;
@@ -40,14 +36,12 @@ class SmilIndexController extends BaseController
 	 * SmilIndexController constructor.
 	 *
 	 * @param PlayerModel   $playerModel
-	 * @param IndexModel    $indexModel
 	 * @param Configuration $config
 	 * @param Curl          $Curl
 	 */
-	function __construct(PlayerModel $playerModel, IndexModel $indexModel, Configuration $config, Curl $Curl)
+	function __construct(PlayerModel $playerModel, Configuration $config, Curl $Curl)
 	{
 		$this->setCurl($Curl)
-			 ->setIndexModel($indexModel)
 			 ->setConfiguration($config);
 
 		$Curl->setUrl($this->getConfiguration()->getIndexServerUri());
@@ -117,26 +111,6 @@ class SmilIndexController extends BaseController
 		     ->curlExec(false);
 		return $this;
 	}
-
-	/**
-	 * @return IndexModel
-	 */
-	protected function getIndexModel()
-	{
-		return $this->IndexModel;
-	}
-
-	/**
-	 * @param IndexModel $IndexModel
-	 *
-	 * @return SmilIndexController
-	 */
-	protected function setIndexModel(IndexModel $IndexModel)
-	{
-		$this->IndexModel = $IndexModel;
-		return $this;
-	}
-
 
 	/**
 	 * @return Curl

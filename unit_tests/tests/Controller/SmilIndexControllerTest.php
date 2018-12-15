@@ -25,7 +25,6 @@ class SmilIndexControllerTest extends TestCase
 	 * @var \Basil\model\PlayerModel
 	 */
 	protected $PlayerModelMock;
-	protected $IndexModelMock;
 	protected $ConfigMock;
 	protected $CurlMock;
 
@@ -35,7 +34,6 @@ class SmilIndexControllerTest extends TestCase
 	protected function tearDown()
 	{
 		unset($this->PlayerModelMock);
-		unset($this->IndexModelMock);
 		unset($this->ConfigMock);
 		unset($this->CurlMock);
 	}
@@ -94,11 +92,10 @@ class SmilIndexControllerTest extends TestCase
 	protected function initMockAllConstructorInjections()
 	{
 		$this->PlayerModelMock = $this->createMock('Basil\model\PlayerModel');
-		$this->IndexModelMock  = $this->createMock('Basil\model\IndexModel');
 		$this->ConfigMock      = $this->createMock('Basil\helper\Configuration');
 		$this->CurlMock        = $this->createMock('Thymian\framework\Curl');
 
-		return new SmilIndexController($this->PlayerModelMock, $this->IndexModelMock, $this->ConfigMock, $this->CurlMock);
+		return new SmilIndexController($this->PlayerModelMock, $this->ConfigMock, $this->CurlMock);
 
 	}
 

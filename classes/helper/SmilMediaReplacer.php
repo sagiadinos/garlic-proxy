@@ -74,7 +74,7 @@ class SmilMediaReplacer
 		$matches = $this->getMatches();
 		foreach ($matches as $uri)
 		{
-			if (!$RemoteFiles->isUriForDownload($uri))
+			if (!$RemoteFiles->isUriForDownload($uri) || $uri == '')
 				continue;
 
 			$RemoteFiles->determineFilePaths();
