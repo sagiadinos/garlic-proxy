@@ -80,7 +80,8 @@ class RemoteFilesTest extends TestCase
 		$Model->isUriForDownload($uri);
 
 		$this->CurlMock->expects($this->once())->method('setUrl')->willReturn($this->CurlMock);
-		$this->CurlMock->expects($this->once())->method('curlExec');
+		$this->CurlMock->expects($this->once())->method('setUrl')->willReturn($this->CurlMock);
+		$this->CurlMock->expects($this->once())->method('setFileDownload')->willReturn($this->CurlMock);
 		$this->CurlMock->expects($this->once())->method('getResponseBody')->willReturn('a-md5-value');
 		$this->CurlMock->expects($this->once())->method('getHttpCode')->willReturn(200);
 
@@ -106,6 +107,7 @@ class RemoteFilesTest extends TestCase
 		$Model->isUriForDownload($uri);
 
 		$this->CurlMock->expects($this->once())->method('setUrl')->willReturn($this->CurlMock);
+		$this->CurlMock->expects($this->once())->method('setFileDownload')->willReturn($this->CurlMock);
 		$this->CurlMock->expects($this->once())->method('curlExec');
 		$this->CurlMock->expects($this->never())->method('getResponseBody');
 		$this->CurlMock->expects($this->once())->method('getHttpCode')->willReturn(404);
