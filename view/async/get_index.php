@@ -35,8 +35,10 @@ if (!$IndexController->isNewIndex())
 	exit;
 
 $Curl              = new \Thymian\framework\Curl();
+$Curl->setUserAgent($PlayerModel->load($uuid));
+$RemoteFiles       = new \Basil\model\RemoteFiles($Curl, $Configuration);
 $SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex(), $Curl, $Configuration);
 $SmilMediaReplacer->findMatches();
-$SmilMediaReplacer->replace($PlayerModel->load($uuid));
+$SmilMediaReplacer->replace($RemoteFiles);
 $IndexModel->saveIndex($uuid, $SmilMediaReplacer->getSmil());
 

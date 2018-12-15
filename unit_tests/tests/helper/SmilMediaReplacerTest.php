@@ -21,24 +21,15 @@ use PHPUnit\Framework\TestCase;
 
 class SmilMediaReplacerTest extends TestCase
 {
-	protected $CurlMock;
-	protected $ConfigMock;
 
-	/**
-	 *  unset all Mocks
-	 */
-	protected function tearDown()
-	{
-		unset($this->CurlMock);
-		unset($this->ConfigMock);
-	}
 
 	/**
 	 * @group units
 	 */
 	public function testFindMatches()
 	{
-		$Helper = $this->initMockAllConstructorInjections();
+		$smil     = file_get_contents(_ResourcesPath.'/indexes/has_all_media.smil');
+		$Helper   = new SmilMediaReplacer($smil);
 		$returned = $Helper->findMatches();
 		$expected = array(
 							0  => 'var/smil/playlists/3/video.mkv',
@@ -56,19 +47,72 @@ class SmilMediaReplacerTest extends TestCase
 	/**
 	 * @group units
 	 */
-	// will be used later need to overthink some changes in tested class
-/*	public function testReplaceWithRelative()
+	public function testReplace()
 	{
-		$Helper = $this->initMockAllConstructorInjections();
+		$smil   = '<video region="screen" src="var/smil/playlists/3/video.mkv" soundLevel="100%" fit="fill" title="PT_Oktoberfest_2016.ts">';
+		$Helper = new SmilMediaReplacer($smil);
 		$method = \PHPUnitUtils::getProtectedMethod($Helper, 'setMatches');
 		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
 		$method->invoke($Helper, $data);
-		$expected = 'var/media/d6baf4644d11a65aec31791a926f5500.mkv';
 
+		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(true);
+		$RemoteFilesMock->expects($this->once())->method('downloadFile')->willReturn(true);
+		$RemoteFilesMock->expects($this->once())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');
+
+		$Helper->replace($RemoteFilesMock);
+
+		$expected = '<video region="screen" src="var/media/d6baf4644d11a65aec31791a926f5500.mkv" soundLevel="100%" fit="fill" title="PT_Oktoberfest_2016.ts">';
 
 		$this->assertContains($expected, $Helper->getSmil());
 	}
-*/
+
+	/**
+	 * @group units
+	 */
+	public function testReplaceNotDownloadable()
+	{
+		$smil   = '<video region="screen" src="var/smil/playlists/3/video.mkv" soundLevel="100%" fit="fill" title="PT_Oktoberfest_2016.ts">';
+		$Helper = new SmilMediaReplacer($smil);
+		$method = \PHPUnitUtils::getProtectedMethod($Helper, 'setMatches');
+		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
+		$method->invoke($Helper, $data);
+
+		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(false);
+		$RemoteFilesMock->expects($this->never())->method('downloadFile')->willReturn(true);
+		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');
+
+		$Helper->replace($RemoteFilesMock);
+
+		$expected = $smil;
+
+		$this->assertContains($expected, $Helper->getSmil());
+	}
+
+	/**
+	 * @group units
+	 */
+	public function testReplaceNotDownloaded()
+	{
+		$smil   = '<video region="screen" src="var/smil/playlists/3/video.mkv" soundLevel="100%" fit="fill" title="PT_Oktoberfest_2016.ts">';
+		$Helper = new SmilMediaReplacer($smil);
+		$method = \PHPUnitUtils::getProtectedMethod($Helper, 'setMatches');
+		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
+		$method->invoke($Helper, $data);
+
+		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(true);
+		$RemoteFilesMock->expects($this->once())->method('downloadFile')->willReturn(false);
+		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');
+
+		$Helper->replace($RemoteFilesMock);
+
+		$expected = $smil;
+
+		$this->assertContains($expected, $Helper->getSmil());
+	}
+
 	// ===================== helper methods =============================================================================
 
 	/**
@@ -76,11 +120,6 @@ class SmilMediaReplacerTest extends TestCase
 	 */
 	protected function initMockAllConstructorInjections()
 	{
-		$this->CurlMock    = $this->createMock('Thymian\framework\Curl');
-		$this->ConfigMock  = $this->createMock('Basil\helper\Configuration');
-
-		$smil = file_get_contents(_ResourcesPath.'/indexes/has_all_media.smil');
-		return new SmilMediaReplacer($smil, $this->CurlMock, $this->ConfigMock);
 
 	}
 

@@ -14,8 +14,8 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
-
-$PlayerModel      = new \Basil\model\P layerModel($Configuration->getFullPathValuesByKey('player_path'));
+/*
+$PlayerModel      = new \Basil\model\PlayerModel($Configuration->getFullPathValuesByKey('player_path'));
 $player_list     = $PlayerModel->scanRegisteredPlayer();
 
 $IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
@@ -41,4 +41,4 @@ foreach ($player_list as $file_info)
 		$IndexModel->saveIndex($uuid, $smil_index);
 	}
 }
-}
+*/

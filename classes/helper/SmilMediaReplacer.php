@@ -17,20 +17,9 @@
 
 namespace Basil\helper;
 
-use Thymian\framework\Curl;
+use Basil\model\RemoteFiles;
 
-/**
- * Concept:
- *
- * files are downloaded from CMS
- * If CMS support md5 hashes, te media files will downloaded and renamed as md5.
- * With this way we can recognize same files even if they had a different names on CMS
- *
- * If CMS not support md5, the files will be downloaded with their original name.
- *
- * Class SmilMediaReplacer
- * @package Basil\helper
- */
+
 class SmilMediaReplacer
 {
 
@@ -39,31 +28,18 @@ class SmilMediaReplacer
 	 */
 	protected $smil = '';
 	/**
-	 * @var Curl
-	 */
-	protected $Curl;
-	/**
-	 * @var Configuration
-	 */
-	protected $Configuration;
-	/**
 	 * @var array
 	 */
 	protected $matches = array();
-	/**
-	 * @var string
-	 */
-	protected $relative_local_filepath = '';
-	/**
-	 * @var string
-	 */
-	protected $absolute_local_filepath = '';
 
-	public function __construct($smil_index, Curl $curl, Configuration $config)
+	/**
+	 * SmilMediaReplacer constructor.
+	 *
+	 * @param string $smil_index
+	 */
+	public function __construct($smil_index)
 	{
-		$this->setSmil($smil_index)
-			 ->setCurl($curl)
-			 ->setConfiguration($config);
+		$this->setSmil($smil_index);
 	}
 
 	/**
@@ -89,123 +65,26 @@ class SmilMediaReplacer
 	}
 
 	/**
-	 * @param $user_agent
+	 * @param RemoteFiles $RemoteFiles
 	 *
 	 * @return $this
 	 */
-	public function replace($user_agent)
+	public function replace(RemoteFiles $RemoteFiles)
 	{
 		$matches = $this->getMatches();
 		foreach ($matches as $uri)
 		{
-			$full_uri = $this->buildUri($uri); // for the case uri is relative
-			if (strpos($full_uri, $this->getConfiguration()->getHomeDomain()) === false)
+			if (!$RemoteFiles->isUriForDownload($uri))
 				continue;
 
-			$this->getCurl()->setUserAgent($user_agent);
+			$RemoteFiles->determineFilePaths();
 
-			$this->determineLocalFilePaths($full_uri);
-
-			// replace the smil
-			if ($this->downloadFile($full_uri, $this->absolute_local_filepath))
+			if ($RemoteFiles->downloadFile())
 			{
-				$this->setSmil(str_replace($uri, $this->relative_local_filepath, $this->getSmil()));
+				$this->setSmil(str_replace($uri, $RemoteFiles->getRelativeLocalFilepath(), $this->getSmil()));
 			}
 		}
 		return $this;
-	}
-
-	/**
-	 * @param $uri
-	 *
-	 * @return $this
-	 */
-	protected function determineLocalFilePaths($uri)
-	{
-		$md5_uri = $this->buildMd5Uri($uri);
-
-		// check if a md5 file exists on server
-		$this->getCurl()
-			 ->setUrl($md5_uri)
-			 ->curlExec(false)
-		;
-
-		$url_path = parse_url($uri, PHP_URL_PATH);
-
-		// if yes, then read the md5 value and build a local path
-		if ($this->getCurl()->getHttpCode() == 200)
-		{
-			$md5             = trim($this->getCurl()->getResponseBody());
-			$extension       = pathinfo($url_path, PATHINFO_EXTENSION);
-			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$md5.'.'.$extension;
-			$this->relative_local_filepath = $this->getConfiguration()->getPathValuesByKey('media_path').'/'.$md5.'.'.$extension;
-		}
-		else // if not, then build a local path with filename
-		{
-			$filename        = pathinfo($url_path, PATHINFO_BASENAME);
-			$this->absolute_local_filepath = $this->getConfiguration()->getFullPathValuesByKey('media_path').'/'.$filename;
-			$this->relative_local_filepath = $this->getConfiguration()->getPathValuesByKey('media_path').'/'.$filename;
-		}
-		return $this;
-	}
-
-	/**
-	 * @param $uri
-	 * @param $local_file_path
-	 *
-	 * @return bool
-	 */
-	protected function downloadFile($uri, $local_file_path)
-	{
-		if (file_exists($local_file_path))
-		{
-			return true;
-		}
-		$this->getCurl()->setUrl($uri)
-			 ->setFileDownload(true)
-			 ->setLocalFilepath($local_file_path)
-			 ->curlExec(false)
-		;
-
-		if (!file_exists($local_file_path))
-		{
-			return false;
-		}
-
-		return true;
-	}
-
-	/**
-	 * @param $uri
-	 *
-	 * @return string
-	 */
-	protected function buildMd5Uri($uri)
-	{
-		return $this->buildUri($uri.'.md5');
-	}
-
-
-	/**
-	 * @param $uri
-	 *
-	 * @return string
-	 */
-	protected function buildUri($uri)
-	{
-		if ($this->isUriRelative($uri))
-			$uri = $this->getConfiguration()->getIndexServer().'/'.$uri;
-		return $uri;
-	}
-
-	/**
-	 * @param $uri
-	 *
-	 * @return bool
-	 */
-	protected function isUriRelative($uri)
-	{
-		return ($uri != '/' && strpos($uri,'http') === false);
 	}
 
 	/**
@@ -216,44 +95,6 @@ class SmilMediaReplacer
 	protected function setSmil($smil)
 	{
 		$this->smil = $smil;
-		return $this;
-	}
-
-	/**
-	 * @return Curl
-	 */
-	protected function getCurl()
-	{
-		return $this->Curl;
-	}
-
-	/**
-	 * @param Curl $curl
-	 *
-	 * @return SmilMediaReplacer
-	 */
-	protected function setCurl($curl)
-	{
-		$this->Curl = $curl;
-		return $this;
-	}
-
-	/**
-	 * @return Configuration
-	 */
-	public function getConfiguration()
-	{
-		return $this->Configuration;
-	}
-
-	/**
-	 * @param Configuration $Configuration
-	 *
-	 * @return SmilMediaReplacer
-	 */
-	public function setConfiguration($Configuration)
-	{
-		$this->Configuration = $Configuration;
 		return $this;
 	}
 
