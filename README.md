@@ -1,13 +1,13 @@
-# basil-proxy
-Basil is a Reverse Proxy for Digital Signage Media Player based on SMIL
+# garlic-proxy
+Garlic-proxy is a Reverse Proxy for [Digital Signage Player](https://smil-control.com/magazine/what-is-a-digital-signage-player/) based on SMIL
 
 ## Why a special proxy solution?
 
-Sometimes you need to operate a group of Digital Signage Player (e.g. in a super market), but you have only a slow internet connection.
+Sometimes you need to operate a group of Digital Signage Player (e.g. in a super market or shopping mall), but you have only a slow internet connection.
 In some cases a common proxy solution like [mod_proxy](https://httpd.apache.org/docs/2.4/mod/mod_proxy.html) could help.
 But there are a cases where that's not enough.
 
-### Basil can be useful if...
+### Garlic-Proxy can be useful if...
 
 * you have same files with different names e.g. for reporting or security reasons. A standard proxy cannot differentiate in this case. Basil can!
 * you want to update content at specific times (e.g. only during the night), but your clients do not support this.
@@ -16,9 +16,9 @@ But there are a cases where that's not enough.
 * you need to access with a protocol your clients not support. e.g. https/ftps 
 
 ## Description
-Basil act as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy)
-If you want to save bandwith or it is limited you can use Basil-Proxy.
-Basil is lightweight and do not need a database backend. It will run even on small IoT devices.
+Garlic-Proxy act as a [reverse proxy](https://en.wikipedia.org/wiki/Reverse_proxy)
+If you want to save bandwith or it is limited you can use this software.
+The software is lightweight and do not need a database backend. It will run even on small IoT devices.
 
 ## Requirements
 * PHP 5.6+
@@ -29,11 +29,11 @@ Basil is lightweight and do not need a database backend. It will run even on sma
 ## Currently Implemented Features
 * registering of SMIL Player
 * testing environment
-* downloading SMIL-Index from Basil-Proxy
+* downloading SMIL-Index from garlic-proxy
 * downloading of SMIL-Index from CMS
 * parsing SMIL
 * downloading media
 * Web GUI which can update indexes
 
 ## Status
-Basil-Proxy is feature complete.
+Garlic-proxy is feature complete.
