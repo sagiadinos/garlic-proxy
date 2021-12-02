@@ -9,7 +9,7 @@ But there are a cases where that's not enough.
 
 ### Garlic-Proxy can be useful if...
 
-* you have same files with different names e.g. for reporting or security reasons. A standard proxy cannot differentiate in this case. Basil can!
+* you have same files with different names e.g. for reporting or security reasons. A standard proxy cannot differentiate in this case. Garlic-proxy can!
 * you want to update content at specific times (e.g. only during the night), but your clients do not support this.
 * you generally need more control over the content update process 
 * you want to prevent e.g. for security reason, that the clients connecting direct to internet
