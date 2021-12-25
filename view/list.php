@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
-basil-proxy: A proxy solution for Digital Signage SMIL Player
-Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
-This file is part of the basil-proxy source code
+garlic-proxy: A proxy solution for Digital Signage SMIL Player
+Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+This file is part of the garlic-proxy source code
 This program is free software: you can redistribute it and/or  modify
 it under the terms of the GNU Affero General Public License, version 3,
 as published by the Free Software Foundation.
@@ -19,9 +19,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 $table  = '';
-$UserAgent   = new \Basil\helper\UserAgent();
+$UserAgent   = new \Garlic\helper\UserAgent();
 $PlayerModel = $this->getModel(); // Do not forget, that we are inside of the ViewController!
-$IndexModel  = new \Basil\model\IndexModel($this->getConfiguration()->getFullPathValuesByKey('index_path'));
+$IndexModel  = new \Garlic\model\IndexModel($this->getConfiguration()->getFullPathValuesByKey('index_path'));
 foreach ($list as $file_info)
 {
 	if (!$file_info->isDot())

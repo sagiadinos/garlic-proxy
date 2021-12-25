@@ -38,7 +38,7 @@
 							<img region="screen" src="var/smil/playlists/3/image2.png" dur="10s" fit="fill" width="100%" title="Free-wallpaper-15-HD-Collections-full-hd-wallpapers-tree.jpg">
 								<param name="cacheControl" value="onlyIfCached" />
 							</img>
-							<ref region="screen" src="https://static.basil.dev/var/smil/playlists/3/widget.wgt" dur="10s" type="application/widget" title="Webseite">
+							<ref region="screen" src="https://static.garlic.dev/var/smil/playlists/3/widget.wgt" dur="10s" type="application/widget" title="Webseite">
 								<param name="cacheControl" value="onlyIfCached" />
 							</ref>
 							<audio region="screen" src="var/smil/playlists/3/audio.mp3" soundLevel="100%" fit="fill" title="Donde.mp3">
@@ -52,7 +52,7 @@
 								<prefetch src="var/smil/playlists/3/video.mkv" />
 								<prefetch src="var/smil/playlists/3/image1.jpg" />
 								<prefetch src="var/smil/playlists/3/image2.png" />
-								<prefetch src="https://static.basil.dev/var/smil/playlists/3/widget.wgt" />
+								<prefetch src="https://static.garlic.dev/var/smil/playlists/3/widget.wgt" />
 								<prefetch src="var/smil/playlists/3/audio.mp3" />
 							</seq>
 						</par>

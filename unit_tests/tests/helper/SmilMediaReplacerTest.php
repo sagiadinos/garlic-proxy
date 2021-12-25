@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,7 +16,7 @@
  *************************************************************************************/
 
 
-use Basil\helper\SmilMediaReplacer;
+use Garlic\helper\SmilMediaReplacer;
 use PHPUnit\Framework\TestCase;
 
 class SmilMediaReplacerTest extends TestCase
@@ -35,7 +35,7 @@ class SmilMediaReplacerTest extends TestCase
 							0  => 'var/smil/playlists/3/video.mkv',
 							1  => 'var/smil/playlists/3/image1.jpg',
 							2  => 'var/smil/playlists/3/image2.png',
-							3  => 'https://static.basil.dev/var/smil/playlists/3/widget.wgt',
+							3  => 'https://static.garlic.dev/var/smil/playlists/3/widget.wgt',
 							4  => 'var/smil/playlists/3/audio.mp3',
 							5  => 'https://foreign-server.tld/content.html',
 							11 => 'adapi:blankScreen'
@@ -55,7 +55,7 @@ class SmilMediaReplacerTest extends TestCase
 		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
 		$method->invoke($Helper, $data);
 
-		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock = $this->createMock('Garlic\model\RemoteFiles');
 		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(true);
 		$RemoteFilesMock->expects($this->once())->method('downloadFile')->willReturn(true);
 		$RemoteFilesMock->expects($this->once())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');
@@ -78,7 +78,7 @@ class SmilMediaReplacerTest extends TestCase
 		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
 		$method->invoke($Helper, $data);
 
-		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock = $this->createMock('Garlic\model\RemoteFiles');
 		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(false);
 		$RemoteFilesMock->expects($this->never())->method('downloadFile');
 		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath');
@@ -101,7 +101,7 @@ class SmilMediaReplacerTest extends TestCase
 		$data   = array(0  => '');
 		$method->invoke($Helper, $data);
 
-		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock = $this->createMock('Garlic\model\RemoteFiles');
 		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(false);
 		$RemoteFilesMock->expects($this->never())->method('downloadFile');
 		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath');
@@ -125,7 +125,7 @@ class SmilMediaReplacerTest extends TestCase
 		$data   = array(0  => 'var/smil/playlists/3/video.mkv');
 		$method->invoke($Helper, $data);
 
-		$RemoteFilesMock = $this->createMock('Basil\model\RemoteFiles');
+		$RemoteFilesMock = $this->createMock('Garlic\model\RemoteFiles');
 		$RemoteFilesMock->expects($this->once())->method('isUriForDownload')->willReturn(true);
 		$RemoteFilesMock->expects($this->once())->method('downloadFile')->willReturn(false);
 		$RemoteFilesMock->expects($this->never())->method('getRelativeLocalFilepath')->willReturn('var/media/d6baf4644d11a65aec31791a926f5500.mkv');

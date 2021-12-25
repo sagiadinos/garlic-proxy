@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * Garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -18,8 +18,8 @@
 $PlayerModel   = $this->getModel(); // Do not forget, that we are inside of the AsyncController
 $Configuration = $this->getConfiguration();
 
-$IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
-$IndexController = new \Basil\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
+$IndexModel      = new \Garlic\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
+$IndexController = new \Garlic\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
 
 if (isset($_GET['uuid']))
 	$uuid = strip_tags($_GET['uuid']); //
@@ -32,8 +32,8 @@ if (!$IndexController->isNewIndex())
 
 $Curl              = new \Thymian\framework\Curl();
 $Curl->setUserAgent($PlayerModel->load($uuid));
-$RemoteFiles       = new \Basil\model\RemoteFiles($Curl, $Configuration);
-$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex());
+$RemoteFiles       = new \Garlic\model\RemoteFiles($Curl, $Configuration);
+$SmilMediaReplacer = new \Garlic\helper\SmilMediaReplacer($IndexController->readDownloadedIndex());
 $SmilMediaReplacer->findMatches();
 $SmilMediaReplacer->replace($RemoteFiles);
 $IndexModel->saveIndex($uuid, $SmilMediaReplacer->getSmil());

@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Saiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Saiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *************************************************************************************/
 
-$PlayerModel     = new \Basil\model\PlayerModel($Configuration->getFullPathValuesByKey('player_path'));
+$PlayerModel     = new \Garlic\model\PlayerModel($Configuration->getFullPathValuesByKey('player_path'));
 $player_list     = $PlayerModel->scanRegisteredPlayer();
 
-$IndexModel      = new \Basil\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
-$IndexController = new \Basil\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
+$IndexModel      = new \Garlic\model\IndexModel($Configuration->getFullPathValuesByKey('index_path'));
+$IndexController = new \Garlic\controller\SmilIndexController($PlayerModel, $Configuration,  new \Thymian\framework\Curl());
 
 
 
@@ -36,8 +36,8 @@ foreach ($player_list as $file_info)
 
 		$Curl              = new \Thymian\framework\Curl();
 		$Curl->setUserAgent($PlayerModel->load($uuid));
-		$RemoteFiles       = new \Basil\model\RemoteFiles($Curl, $Configuration);
-		$SmilMediaReplacer = new \Basil\helper\SmilMediaReplacer($IndexController->readDownloadedIndex());
+		$RemoteFiles       = new \Garlic\model\RemoteFiles($Curl, $Configuration);
+		$SmilMediaReplacer = new \Garlic\helper\SmilMediaReplacer($IndexController->readDownloadedIndex());
 		$SmilMediaReplacer->findMatches();
 		$SmilMediaReplacer->replace($RemoteFiles);
 		$IndexModel->saveIndex($uuid, $SmilMediaReplacer->getSmil());

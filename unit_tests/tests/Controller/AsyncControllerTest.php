@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,12 +16,12 @@
  *************************************************************************************/
 
 
-use Basil\controller\AsyncController;
+use Garlic\controller\AsyncController;
 
 class AsyncControllerTest extends \PHPUnit\Framework\TestCase
 {
 	/**
-	 * @var \Basil\model\PlayerModel
+	 * @var \Garlic\model\PlayerModel
 	 */
 	protected $PlayerModelMock;
 	protected $ConfigMock;
@@ -73,8 +73,8 @@ class AsyncControllerTest extends \PHPUnit\Framework\TestCase
 	 */
 	protected function initMockAllConstructorInjections()
 	{
-		$this->PlayerModelMock = $this->createMock('Basil\model\PlayerModel');
-		$this->ConfigMock      = $this->createMock('Basil\helper\Configuration');
+		$this->PlayerModelMock = $this->createMock('Garlic\model\PlayerModel');
+		$this->ConfigMock      = $this->createMock('Garlic\helper\Configuration');
 
 		return new AsyncController($this->PlayerModelMock, $this->ConfigMock);
 

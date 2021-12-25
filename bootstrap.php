@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -30,11 +30,11 @@ require_once('classes/framework/Autoloader.php');
 $loader = new \Thymian\framework\Autoloader();
 $loader->register()
 	   ->addNamespace('\Thymian',$system_dir.'/classes/')
-	   ->addNamespace('\Basil',$system_dir.'/classes/');
+	   ->addNamespace('\Garlic',$system_dir.'/classes/');
 
-$Configuration  = new \Basil\helper\Configuration($system_dir.'/configuration/main.ini', $system_dir);
+$Configuration  = new \Garlic\helper\Configuration($system_dir.'/configuration/main.ini', $system_dir);
 
-$Directory      = new \Basil\model\Directory();
+$Directory      = new \Garlic\model\Directory();
 $Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('player_path'));
 $Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('index_path'));
 $Directory->createDirectoryIfNotExist($Configuration->getFullPathValuesByKey('media_path'));

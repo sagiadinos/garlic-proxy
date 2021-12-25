@@ -1,8 +1,8 @@
 <?php
 /*************************************************************************************
- * basil-proxy: A proxy solution for Digital Signage SMIL Player
- * Copyright (C) 2018 Nikolaos Sagiadinos <ns@smil-control.com>
- * This file is part of the basil-proxy source code
+ * garlic-proxy: A proxy solution for Digital Signage SMIL Player
+ * Copyright (C) 2021 Nikolaos Sagiadinos <ns@smil-control.com>
+ * This file is part of the garlic-proxy source code
  *
  * This program is free software: you can redistribute it and/or  modify
  * it under the terms of the GNU Affero General Public License, version 3,
@@ -16,7 +16,7 @@
  *************************************************************************************/
 
 
-namespace Basil\model;
+namespace Garlic\model;
 
 
 class Directory
